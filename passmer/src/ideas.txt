@@ -1,0 +1,9 @@
+Features:
+    - Local Login - No Internet required - Username + Password Login
+->  - Encryption: AES256 or just basic SQLCipher
+    - GUI using GTK
+    - Generate Password
+    - Enter other details (username, email, notes, ...)
+    - Automatically input Password for username
+    - Copy data (like password)
+    - Crossplatform (except web)

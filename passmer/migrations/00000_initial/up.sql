@@ -1,0 +1,16 @@
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    a1 TEXT NOT NULL,
+    b2 TEXT NOT NULL
+);
+
+CREATE TABLE data (
+    id INTEGER PRIMARY KEY,
+    uid INTEGER NOT NULL,
+    c3 TEXT NOT NULL,
+    d4 TEXT NOT NULL,
+    e5 TEXT NOT NULL,
+    f6 TEXT NOT NULL,
+    g7 TEXT NOT NULL,
+    FOREIGN KEY(uid) REFERENCES users(id)
+);

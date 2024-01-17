@@ -1,0 +1,2 @@
+DROP TABLE data;
+DROP TABLE users;
