@@ -1,11 +1,24 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use rfd::MessageDialog;
+use rfd::{MessageDialog, MessageLevel};
 use std::process::exit;
+use tauri::Manager;
+
+mod tauri_ui;
 
 fn main() {
-    let health_state = tauri::Builder::default().run(tauri::generate_context!());
+    let health_state = tauri::Builder::default()
+        .setup(|app| {
+            let window = app.get_window("main").ok_or("Window not found")?;
+            tauri_ui::window::resize_window_for_login(window.clone())?;
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![
+            tauri_ui::window::resize_window_for_login,
+            tauri_ui::window::resize_window_for_main
+        ])
+        .run(tauri::generate_context!());
 
     // In case of error, show a message dialog and exit the application
     match health_state {
@@ -14,7 +27,7 @@ fn main() {
             MessageDialog::new()
                 .set_title("Error")
                 .set_description(format!("{}", e))
-                .set_level(rfd::MessageLevel::Error)
+                .set_level(MessageLevel::Error)
                 .show();
             exit(1);
         }
