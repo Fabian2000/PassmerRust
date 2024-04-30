@@ -1,9 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import passmerLogo from './assets/icon.webp'
 import './style/main.css'
+import { invoke } from '@tauri-apps/api';
 
 function Login() {
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    invoke('resize_window_for_login');
+
+    return () => {
+    }
+  }, []);
 
   const bindPasswordValue = (e) => {
     setPassword(e.target.value);
