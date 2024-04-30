@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react'
 import ReactDOM from 'react-dom/client'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import App from './App.jsx'
-import './index.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Login from './Login.jsx'
+import { invoke } from '@tauri-apps/api';
 
 function Main() {
   useEffect(() => {
@@ -48,6 +48,8 @@ function Main() {
       window.addEventListener('contextmenu', preventContextMenu);
       window.addEventListener('dragstart', preventImageDrag);
     }
+
+    invoke('show_window');
     return () => { 
       if (isReleaseMode) {
         window.removeEventListener('keydown', preventCtrl);
@@ -62,10 +64,8 @@ function Main() {
     <React.StrictMode>
       <Router>
         <Routes>
-          {/*<Route path="/about">
-            <About />
-          </Route>*/}
-          <Route path="/" element={<App/>} />
+          <Route path="/" element={<Login/>} />
+          {/*<Route path="/" element={<About/>} />*/}
         </Routes>
       </Router>
     </React.StrictMode>

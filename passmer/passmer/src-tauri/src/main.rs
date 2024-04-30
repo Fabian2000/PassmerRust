@@ -16,7 +16,9 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             tauri_ui::window::resize_window_for_login,
-            tauri_ui::window::resize_window_for_main
+            tauri_ui::window::resize_window_for_main,
+            tauri_ui::window::hide_window,
+            tauri_ui::window::show_window
         ])
         .run(tauri::generate_context!());
 

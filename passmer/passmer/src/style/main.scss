@@ -1,0 +1,28 @@
+@import 'variables';
+@import 'components/input';
+@import 'login';
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: $font-family;
+    font-size: $font-size;
+}
+
+html {
+    background-color: $bg-color;
+    background-image: url('../assets/icon_pattern.webp');
+    background-size: 100px;
+    background-blend-mode: multiply;
+}
+
+* {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+::-ms-reveal,
+::-webkit-reveal {
+    display: none;
+}

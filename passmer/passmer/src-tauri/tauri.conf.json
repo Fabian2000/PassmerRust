@@ -59,7 +59,8 @@
         "height": 600,
         "resizable": true,
         "title": "Passmer - Password Manager",
-        "width": 800
+        "width": 800,
+        "visible": false
       }
     ]
   }

@@ -1,6 +1,6 @@
 use tauri::{PhysicalPosition, PhysicalSize, Position, Size};
 
-const LOGIN_SIZE: (i32, i32) = (300, 400);
+const LOGIN_SIZE: (i32, i32) = (250, 200);
 const MAIN_SIZE: (i32, i32) = (800, 600);
 
 #[tauri::command]
@@ -41,6 +41,24 @@ pub fn resize_window_for_main(window: tauri::Window) -> Result<(), String> {
         return Err("Failed to set window resizable".to_string());
     };
     set_window_size_and_position(&window, new_x, new_y, new_width, new_height)
+}
+
+#[tauri::command]
+pub fn hide_window(window: tauri::Window) -> Result<(), String> {
+    let Ok(_) = window.hide() else {
+        return Err("Failed to hide window".to_string());
+    };
+
+    Ok(())
+}
+
+#[tauri::command]
+pub fn show_window(window: tauri::Window) -> Result<(), String> {
+    let Ok(_) = window.show() else {
+        return Err("Failed to show window".to_string());
+    };
+
+    Ok(())
 }
 
 fn get_window_position(window: &tauri::Window) -> Result<(i32, i32), String> {
