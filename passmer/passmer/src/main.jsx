@@ -1,18 +1,21 @@
 import React, {useEffect} from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Login from './Login.jsx'
+import Login from './login.jsx'
 import { invoke } from '@tauri-apps/api';
 
 function Main() {
   useEffect(() => {
 
     const preventCtrl = (e) => {
-      // Exclude Ctrl + V and Ctrl + C
+      // Exclude Ctrl + V and Ctrl + C and Ctrl + A (in input fields)
       if (e.ctrlKey && e.key === 'v') {
         return;
       }
       if (e.ctrlKey && e.key === 'c') {
+        return;
+      }
+      if ((e.ctrlKey && e.key === 'a') && e.target.nodeName === 'INPUT') {
         return;
       }
       if (e.ctrlKey) {
