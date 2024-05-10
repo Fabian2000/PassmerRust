@@ -1,7 +1,8 @@
-import React, {useEffect} from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Login from './login.jsx'
+import React, {useEffect} from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from './login';
+import Sidebar from './sidebar';
 import { invoke } from '@tauri-apps/api';
 
 function Main() {
@@ -18,10 +19,16 @@ function Main() {
       if ((e.ctrlKey && e.key === 'a') && e.target.nodeName === 'INPUT') {
         return;
       }
-      if (e.ctrlKey) {
+      if (e.ctrlKey || e.metaKey) {
         e.preventDefault();
       }
     };
+
+    const preventAlt = (e) => {
+      if (e.altKey) {
+        e.preventDefault();
+      }
+    }
 
     const preventFunctionKeys = (e) => {
       if (e.key.startsWith('F') && !isNaN(e.key.slice(1)) && parseInt(e.key.slice(1)) >= 1 && parseInt(e.key.slice(1)) <= 12) {
@@ -47,6 +54,7 @@ function Main() {
 
     if (isReleaseMode) {
       window.addEventListener('keydown', preventCtrl);
+      window.addEventListener('keydown', preventAlt);
       window.addEventListener('keydown', preventFunctionKeys);
       window.addEventListener('contextmenu', preventContextMenu);
       window.addEventListener('dragstart', preventImageDrag);
@@ -56,6 +64,7 @@ function Main() {
     return () => { 
       if (isReleaseMode) {
         window.removeEventListener('keydown', preventCtrl);
+        window.removeEventListener('keydown', preventAlt);
         window.removeEventListener('keydown', preventFunctionKeys);
         window.removeEventListener('contextmenu', preventContextMenu);
         window.removeEventListener('dragstart', preventImageDrag);
@@ -68,7 +77,7 @@ function Main() {
       <Router>
         <Routes>
           <Route path="/" element={<Login/>} />
-          {/*<Route path="/" element={<About/>} />*/}
+          <Route path="/sidebar" element={<Sidebar/>} />
         </Routes>
       </Router>
     </React.StrictMode>

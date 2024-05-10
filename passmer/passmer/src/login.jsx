@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react'
-import passmerLogo from './assets/icon.webp'
-import './style/main.css'
-import { invoke } from '@tauri-apps/api';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import passmerLogo from './assets/icon.webp';
+import './style/main.css';
+import * as Invokes from './invokes';
 
 function Login() {
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    invoke('resize_window_for_login');
+    Invokes.resizeWindowForLogin();
 
     return () => {
     }
@@ -21,6 +23,22 @@ function Login() {
     e.target.focus();
   }
 
+  const ValidateKeyPressed = (e) => {
+    if (e.key === 'Enter') {
+      Invokes.validatePassword(e.target.value).then((response) => {
+        debugger;
+        if (response == false) {
+          Invokes.msgBox('Invalid Password', Invokes.msgBoxLevel.WARNING);
+          setPassword('');
+          return;
+        }
+        navigate('/sidebar', { replace: true });
+      });
+
+      // TODO: Validate password
+    }
+  }
+
   const random = Math.random().toString(36).substring(7);
 
   return (
@@ -28,7 +46,7 @@ function Login() {
       <div>
         <div className="login">
           <img className='login logo' src={passmerLogo} alt="Passmer Logo" />
-          <input className='login password-input' type="password" placeholder="Pin or Password" value={password} onChange={bindPasswordValue} autoComplete={'passmer' + random} onBlur={reFocus} autoFocus />
+          <input className='login password-input' type="password" placeholder="Pin or Password" value={password} onChange={bindPasswordValue} onKeyDown={ValidateKeyPressed} autoComplete={'passmer' + random} onBlur={reFocus} autoFocus />
         </div>
       </div>
     </>

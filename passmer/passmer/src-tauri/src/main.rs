@@ -6,6 +6,8 @@ use std::process::exit;
 use tauri::Manager;
 
 mod tauri_ui;
+mod database;
+mod code;
 
 fn main() {
     let health_state = tauri::Builder::default()
@@ -18,7 +20,9 @@ fn main() {
             tauri_ui::window::resize_window_for_login,
             tauri_ui::window::resize_window_for_main,
             tauri_ui::window::hide_window,
-            tauri_ui::window::show_window
+            tauri_ui::window::show_window,
+            code::login::validate_password,
+            code::msg_box::msg_box,
         ])
         .run(tauri::generate_context!());
 

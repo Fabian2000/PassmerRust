@@ -7,6 +7,11 @@ const MAIN_SIZE: (i32, i32) = (800, 600);
 pub fn resize_window_for_login(window: tauri::Window) -> Result<(), String> {
     let (curr_x, curr_y) = get_window_position(&window)?;
     let (curr_width, curr_height) = get_window_size(&window)?;
+
+    if curr_width == LOGIN_SIZE.0 && curr_height == LOGIN_SIZE.1 {
+        return Ok(());
+    }
+
     let (new_width, new_height) = LOGIN_SIZE;
     let (new_x, new_y) = calculate_new_position(
         curr_x,
@@ -27,6 +32,11 @@ pub fn resize_window_for_login(window: tauri::Window) -> Result<(), String> {
 pub fn resize_window_for_main(window: tauri::Window) -> Result<(), String> {
     let (curr_x, curr_y) = get_window_position(&window)?;
     let (curr_width, curr_height) = get_window_size(&window)?;
+
+    if curr_width == MAIN_SIZE.0 && curr_height == MAIN_SIZE.1 {
+        return Ok(());
+    }
+
     let (new_width, new_height) = MAIN_SIZE;
     let (new_x, new_y) = calculate_new_position(
         curr_x,

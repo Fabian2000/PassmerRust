@@ -1,3 +1,16 @@
+button {
+  border-radius: 7px;
+  padding: 10px;
+  outline: none;
+  border: 0;
+}
+button:focus-visible {
+  outline: solid 2px #ff0000;
+}
+button:focus {
+  outline: none;
+}
+
 input {
   border-radius: 7px;
   padding: 10px;
@@ -28,12 +41,188 @@ input:focus {
   color: #ffffff;
 }
 .login .password-input::-moz-selection {
-  background-color: #343a40 !important;
+  background-color: #161616 !important;
   color: #ffffff;
 }
 .login .password-input::selection {
-  background-color: #343a40 !important;
+  background-color: #161616 !important;
   color: #ffffff;
+}
+
+.sidebar {
+  display: flex;
+  justify-content: left;
+}
+.sidebar::after {
+  content: "Passmer - Password Manager";
+  position: absolute;
+  font-weight: bold;
+  top: 50%;
+  left: 0;
+  transform: rotate(-90deg) translateX(-50%) translateY(50%);
+  transform-origin: top left;
+  color: #1b1b1b;
+  filter: brightness(3);
+  opacity: 0.1;
+}
+
+.sidebar-first {
+  width: 55px;
+  height: 100dvh;
+  background-color: #1b1b1b;
+}
+
+.sidebar-first-split-top {
+  flex-direction: column;
+  height: 50dvh;
+  display: flex;
+  align-items: flex-start;
+}
+
+.sidebar-first-split-bottom {
+  flex-direction: column-reverse;
+  height: 50dvh;
+  display: flex;
+  align-items: flex-end;
+}
+
+.sidebar-btn {
+  width: 45px;
+  height: 45px;
+  background-color: #161616;
+  color: #f0f0f0;
+  border: none;
+  border-radius: 7px;
+  margin: 5px;
+  padding: 10px;
+  cursor: pointer;
+  transform: scale(1);
+  transition: all 0.25s ease-in-out;
+  overflow: hidden;
+}
+.sidebar-btn svg {
+  pointer-events: none;
+}
+.sidebar-btn:hover svg {
+  transform: scale(1.2);
+}
+.sidebar-btn::before {
+  content: "";
+  pointer-events: none;
+  width: 0;
+  height: 0;
+  background-color: #161616;
+  opacity: 0;
+  position: absolute;
+  top: var(--mouse-y, 50%);
+  left: var(--mouse-x, 50%);
+  border-radius: 100%;
+  transition: background-color 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+.sidebar-btn:active::before {
+  top: var(--mouse-y, 50%);
+  left: var(--mouse-x, 50%);
+  background-color: #292929;
+  opacity: 1;
+  border-radius: 7px;
+  animation: sidebar-btn-before-sizer 0.1s ease-in-out forwards;
+  /*transform: rotate(-180deg);*/
+  transition: none;
+}
+.sidebar-btn:hover::before {
+  width: 20px;
+  height: 20px;
+  top: calc(var(--mouse-y, 50%) - 10px);
+  left: calc(var(--mouse-x, 50%) - 10px);
+  background-color: #292929;
+  opacity: 0.2;
+  border-radius: 7px;
+  box-shadow: 0 0 10px 5px #292929;
+  /*transform: rotate(-180deg);*/
+}
+
+@keyframes sidebar-btn-before-sizer {
+  from {
+    top: var(--mouse-y, 50%);
+    left: var(--mouse-x, 50%);
+    width: 0;
+    height: 0;
+  }
+  to {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+.sidebar-btn.rotate:hover svg {
+  transform: rotate(180deg) scale(1.2);
+}
+
+.sidebar-btn.jump:hover svg {
+  transform: scale(1.2) rotate(0) translate(0);
+  animation: sidebar-jump-effect 0.5s ease-in-out;
+}
+
+.sidebar-btn.wiggle:hover svg {
+  transform: scale(1.2) rotate(0) translate(0);
+  transform-origin: bottom center;
+  animation: sidebar-wiggle-effect 0.5s ease-in-out;
+}
+
+@keyframes sidebar-wiggle-effect {
+  0% {
+    transform: translateX(0) rotate(0);
+  }
+  25% {
+    transform: translateX(-2px) rotate(-10deg) skewX(-5deg) skewY(-5deg);
+  }
+  50% {
+    transform: translateX(2px) rotate(10deg) skewX(5deg) skewY(5deg);
+  }
+  75% {
+    transform: translateX(-2px) rotate(-10deg);
+  }
+  100% {
+    transform: translateX(0) rotate(0) scale(1.2);
+  }
+}
+@keyframes sidebar-jump-effect {
+  0% {
+    transform: translateY(0) rotate(0);
+  }
+  50% {
+    transform: translateY(-5px) rotate(-20deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0);
+  }
+}
+.sidebar-btn.move:hover svg {
+  transform: scale(1.2) rotate(0) translate(0);
+  transform-origin: bottom right;
+  animation: sidebar-move-effect 1s ease-in-out;
+}
+
+@keyframes sidebar-move-effect {
+  0% {
+    transform: translateY(0) rotate(0);
+  }
+  25% {
+    transform: translateY(-5px) translateX(5px) rotate(20deg);
+  }
+  50% {
+    transform: translateY(5px) rotate(0);
+  }
+  75% {
+    transform: translateY(0px) translateX(-5px) rotate(-20deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0) scale(1.2);
+  }
+}
+.sidebar-btn svg {
+  transition: all 0.25s ease-in-out;
 }
 
 html, body {
