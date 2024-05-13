@@ -26,7 +26,7 @@ function Login() {
   const ValidateKeyPressed = (e) => {
     if (e.key === 'Enter') {
       Invokes.validatePassword(e.target.value).then((response) => {
-        debugger;
+        //debugger;
         if (response == false) {
           Invokes.msgBox('Invalid Password', Invokes.msgBoxLevel.WARNING);
           setPassword('');
