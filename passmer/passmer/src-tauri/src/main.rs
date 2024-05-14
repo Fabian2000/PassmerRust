@@ -5,9 +5,9 @@ use rfd::{MessageDialog, MessageLevel};
 use std::process::exit;
 use tauri::Manager;
 
-mod tauri_ui;
-mod database;
 mod code;
+mod database;
+mod tauri_ui;
 
 fn main() {
     let health_state = tauri::Builder::default()
@@ -23,6 +23,9 @@ fn main() {
             tauri_ui::window::show_window,
             code::login::validate_password,
             code::msg_box::msg_box,
+            database::passmer::load_db,
+            database::passmer::save_db,
+            database::passmer::db_exists,
         ])
         .run(tauri::generate_context!());
 

@@ -5,6 +5,14 @@ export const resizeWindowForLogin = () => invoke('resize_window_for_login');
 export const resizeWindowForMain = () => invoke('resize_window_for_main');
 
 export const validatePassword = (password) => invoke('validate_password', { "password" : password });
+// database::passmer::load_db,
+// database::passmer::save_db,
+// database::passmer::db_exists,
+export const loadDb = (key) => invoke('load_db', { "key": key });
+
+export const saveDb = () => invoke('save_db');
+
+export const dbExists = () => invoke('db_exists');
 
 export const msgBox = (message, level) => invoke('msg_box', { "text" : message, "level" : level });
 

@@ -11,6 +11,13 @@ function Login() {
   useEffect(() => {
     Invokes.resizeWindowForLogin();
 
+    Invokes.dbExists().then((dbExists) => {
+      let dbNotExists = !dbExists;
+      if (dbNotExists) {
+        Invokes.msgBox('Welcome to Passmer. Please enter a password to create a new database.', Invokes.msgBoxLevel.INFO);
+      }
+    });
+
     return () => {
     }
   }, []);
@@ -32,6 +39,8 @@ function Login() {
           setPassword('');
           return;
         }
+
+        Invokes.loadDb(e.target.value);
         navigate('/sidebar', { replace: true });
       });
 

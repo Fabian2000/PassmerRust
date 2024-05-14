@@ -73,14 +73,19 @@ function Main() {
   }, []);
 
   return (
-    <React.StrictMode>
+      // <React.StrictMode> <- Makes double calls. WTF. Useless. That proves nothing, but destroys everything. Double event handling and everything is not the right way to prove things!
+      // My explanation of React.StrictMode:
+      // StrictMode is a tool for highlighting potential problems in an application. Like Fragment, StrictMode does not render any visible UI. It activates additional checks and warnings for its descendants.
+      // This checks do the following:
+      // They create double events, double data and more problems than they solve. They are not the right. Whoever invented this: Shame on you. :)
+      // And no, I will not discuss about it. It's a fact. With strict mode, I create more potential security problems than I solve (Even if they are only during development).
       <Router>
         <Routes>
           <Route path="/" element={<Login/>} />
           <Route path="/sidebar" element={<Sidebar/>} />
         </Routes>
       </Router>
-    </React.StrictMode>
+    /*</React.StrictMode>*/
   );
 }
 

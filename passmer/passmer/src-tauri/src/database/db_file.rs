@@ -1,10 +1,11 @@
-use aes_gcm::aead::{Aead, KeyInit, generic_array::GenericArray};
+use aes_gcm::aead::{generic_array::GenericArray, Aead, KeyInit};
 use aes_gcm::{Aes256Gcm, Nonce};
 use rand::rngs::OsRng;
 use rand::RngCore;
 use sha2::{Digest, Sha256};
 use std::fs::OpenOptions;
 use std::io::{Read, Write};
+use std::path::Path;
 
 use super::passmer::Passmer;
 
@@ -27,11 +28,15 @@ pub fn save(filename: &str, key: &[u8; 32], data: Passmer) -> Result<(), String>
     let nonce = Nonce::from_slice(&nonce_bytes);
 
     // Encrypt the data
-    let cipher_text = cipher.encrypt(nonce, data.as_bytes())
+    let cipher_text = cipher
+        .encrypt(nonce, data.as_bytes())
         .map_err(|err| format!("Encryption failed: {}", err))?;
 
     // Open the file for writing
-    let mut file = OpenOptions::new().write(true).create(true).truncate(true)
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
         .open(filename)
         .map_err(|err| format!("Failed to open file '{}': {}", filename, err))?;
 
@@ -82,8 +87,13 @@ pub fn load(filename: &str, key: &[u8; 32]) -> Result<Passmer, String> {
 }
 
 // Checks if database file exists
-fn exists(filename: &str) -> bool {
-    std::path::Path::new(filename).exists()
+pub fn exists(filename: &str) -> bool {
+    let path = Path::new(filename);
+    let Ok(found) = path.try_exists() else {
+        return false;
+    };
+
+    found
 }
 
 // Creates a new database file
@@ -135,13 +145,15 @@ pub fn validate(filename: &str, key: &[u8; 32]) -> bool {
 
 // passmer database to json string
 fn to_json_string(passmer_struct: Passmer) -> Result<String, String> {
-    let json_string = serde_json::to_string(&passmer_struct).map_err(|err| format!("Serialization failed: {}", err))?;
+    let json_string = serde_json::to_string(&passmer_struct)
+        .map_err(|err| format!("Serialization failed: {}", err))?;
     Ok(json_string)
 }
 
 // json string to passmer database
 fn from_json_string(json_string: &str) -> Result<Passmer, String> {
-    let passmer_struct: Passmer = serde_json::from_str(json_string).map_err(|err| format!("Deserialization failed: {}", err))?;
+    let passmer_struct: Passmer = serde_json::from_str(json_string)
+        .map_err(|err| format!("Deserialization failed: {}", err))?;
     Ok(passmer_struct)
 }
 
