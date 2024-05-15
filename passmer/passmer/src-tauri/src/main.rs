@@ -21,7 +21,6 @@ fn main() {
         exit(1);
     };
 
-    #[allow(unused_variables)]
     let Ok(lock_guard) = lock.try_lock() else {
         MessageDialog::new()
             .set_title("Error")
