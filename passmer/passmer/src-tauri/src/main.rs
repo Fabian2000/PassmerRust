@@ -1,15 +1,36 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use lazy_static::lazy_static;
 use rfd::{MessageDialog, MessageLevel};
 use std::process::exit;
 use tauri::Manager;
+use named_lock::NamedLock;
 
 mod code;
 mod database;
 mod tauri_ui;
 
 fn main() {
+    let Ok(lock) = NamedLock::create("passmer_start_only_once_lock") else {
+        MessageDialog::new()
+            .set_title("Error")
+            .set_description("Could not create single instance lock")
+            .set_level(MessageLevel::Error)
+            .show();
+        exit(1);
+    };
+
+    #[allow(unused_variables)]
+    let Ok(lock_guard) = lock.try_lock() else {
+        MessageDialog::new()
+            .set_title("Error")
+            .set_description("Another instance of Passmer is already running")
+            .set_level(MessageLevel::Error)
+            .show();
+        exit(1);
+    };
+
     let health_state = tauri::Builder::default()
         .setup(|app| {
             let window = app.get_window("main").ok_or("Window not found")?;

@@ -42,3 +42,6 @@ package-lock.json
 .vscode/
 *.swp
 *.swo
+
+# Project used files
+*.crypt.bin
