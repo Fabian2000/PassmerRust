@@ -72,6 +72,30 @@ input:focus {
   background-color: #1b1b1b;
 }
 
+.sidebar-second {
+  width: 250px;
+  height: 100dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  container-type: inline-size;
+  /* If sidebar-second is 300 px, make full view for real sidebar behavior */
+}
+.sidebar-second .sidebar-view {
+  width: 500px;
+  max-height: 90%;
+  border-radius: 7px;
+  background-color: #202020;
+}
+@container (max-width: 250px) {
+  .sidebar-second .sidebar-view {
+    width: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
+}
+
 .sidebar-first-split-top {
   flex-direction: column;
   height: 50dvh;
@@ -243,6 +267,7 @@ html {
   -moz-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+  color: #f0f0f0;
 }
 
 ::-ms-reveal,

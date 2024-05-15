@@ -53,10 +53,9 @@ function Sidebar() {
           </div>
         </div>
         <div className="sidebar-second">
-          SIDEBAR 2
-          ==========
-          TITLE
-          REPEAT SECTION LIST
+          <div className='sidebar-view'>
+            <h1>Passmer</h1>
+          </div>
         </div>
         {/*<div>
           CONTEXTMENU
