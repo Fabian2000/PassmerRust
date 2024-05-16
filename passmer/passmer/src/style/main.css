@@ -249,6 +249,21 @@ input:focus {
   transition: all 0.25s ease-in-out;
 }
 
+.sidebar-title-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.sidebar-title-area .title {
+  font-size: 20pt;
+  font-weight: bold;
+  margin-left: 20px;
+}
+.sidebar-title-area .sidebar-btn svg {
+  width: 25px;
+  height: 25px;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -273,4 +288,8 @@ html {
 ::-ms-reveal,
 ::-webkit-reveal {
   display: none;
+}
+
+.bg-transparent {
+  background-color: transparent;
 }/*# sourceMappingURL=main.css.map */

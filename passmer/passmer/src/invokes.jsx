@@ -14,6 +14,8 @@ export const saveDb = () => invoke('save_db');
 
 export const dbExists = () => invoke('db_exists');
 
+export const getSidebarData = (search) => invoke('get_sidebar_data', { "search": search});
+
 export const msgBox = (message, level) => invoke('msg_box', { "text" : message, "level" : level });
 
 export const msgBoxLevel = Object.freeze({

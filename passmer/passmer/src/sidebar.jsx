@@ -3,7 +3,7 @@ import passmerLogo from './assets/icon.webp';
 import './style/main.css';
 import * as Invokes from './invokes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faPlus, faGear, faArrowRightFromBracket } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faPlus, faGear, faArrowRightFromBracket, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar() {
   const [search, setSearch] = useState('');
@@ -53,8 +53,13 @@ function Sidebar() {
           </div>
         </div>
         <div className="sidebar-second">
-          <div className='sidebar-view'>
-            <h1>Passmer</h1>
+          <div className="sidebar-view">
+            <div className="sidebar-title-area">
+              <h1 className="title">Passmer</h1>
+              <button title="Options" className="sidebar-btn bg-transparent">
+                <FontAwesomeIcon icon={faEllipsisVertical} />
+              </button>
+            </div>
           </div>
         </div>
         {/*<div>

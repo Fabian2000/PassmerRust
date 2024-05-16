@@ -112,7 +112,7 @@ fn create(filename: &str, key: &[u8; 32]) -> Result<(), String> {
         .map_err(|err| format!("Failed to open file '{}': {}", filename, err))?;
 
     // Create an empty Passmer instance
-    let passmer_instance = Passmer { vec: None };
+    let passmer_instance = Passmer { sections: None };
 
     // Create a nonce initialized to zero bytes
     let mut nonce_bytes = [0u8; 12];

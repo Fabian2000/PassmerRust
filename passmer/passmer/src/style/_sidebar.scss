@@ -217,3 +217,22 @@
 .sidebar-btn svg {
     transition: all 0.25s ease-in-out;
 }
+
+.sidebar-title-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .title {
+        font-size: 20pt;
+        font-weight: bold;
+        margin-left: $margin;
+    }
+
+    .sidebar-btn {
+        svg {
+            width: 25px;
+            height: 25px;
+        }
+    }
+}

@@ -46,6 +46,7 @@ fn main() {
             database::passmer::load_db,
             database::passmer::save_db,
             database::passmer::db_exists,
+            code::sidebar::get_sidebar_data,
         ])
         .run(tauri::generate_context!());
 

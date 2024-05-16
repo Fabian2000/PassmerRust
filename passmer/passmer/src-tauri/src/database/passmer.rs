@@ -11,7 +11,7 @@ use lazy_static::lazy_static;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, Eq)]
 pub struct Passmer {
-    pub vec: Option<Vec<Section>>,
+    pub sections: Option<Vec<Section>>,
 }
 
 lazy_static! {
