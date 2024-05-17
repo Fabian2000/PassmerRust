@@ -3,6 +3,7 @@ button {
     padding: $padding;
     outline: none;
     border: 0;
+    cursor: pointer;
 
     &:focus-visible {
         outline: $outline;

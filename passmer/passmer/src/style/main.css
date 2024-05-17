@@ -3,6 +3,7 @@ button {
   padding: 10px;
   outline: none;
   border: 0;
+  cursor: pointer;
 }
 button:focus-visible {
   outline: solid 2px #ff0000;
@@ -73,7 +74,7 @@ input:focus {
 }
 
 .sidebar-second {
-  width: 250px;
+  width: 100%; /*250px sidebar, 100% full-page*/
   height: 100dvh;
   display: flex;
   justify-content: center;
@@ -86,6 +87,21 @@ input:focus {
   max-height: 90%;
   border-radius: 7px;
   background-color: #202020;
+}
+.sidebar-second .sidebar-view .search-input {
+  margin: 0 auto;
+  display: block;
+  margin-bottom: 20px;
+  background-color: #303030;
+  color: #ffffff;
+}
+.sidebar-second .sidebar-view .search-input::-moz-selection {
+  background-color: #161616 !important;
+  color: #ffffff;
+}
+.sidebar-second .sidebar-view .search-input::selection {
+  background-color: #161616 !important;
+  color: #ffffff;
 }
 @container (max-width: 250px) {
   .sidebar-second .sidebar-view {
@@ -264,6 +280,68 @@ input:focus {
   height: 25px;
 }
 
+.context-menu {
+  position: fixed;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 1000;
+  left: var(--context-menu-x, 0);
+  top: var(--context-menu-y, 0);
+  background-color: #1b1b1b;
+  border-radius: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
+  box-shadow: 1px 1px 7px 0px black;
+  transition: all 0.25s ease-in-out;
+  opacity: 0;
+  animation: hide 0.25s ease-in-out forwards;
+}
+.context-menu.show {
+  display: flex;
+  animation: show 0.25s ease-in-out forwards;
+}
+.context-menu .context-menu-btn {
+  background-color: #1b1b1b;
+  width: 100%;
+  margin-top: 5px;
+  text-align: start;
+  text-wrap: nowrap;
+  transition: all 0.1s ease-in-out;
+}
+.context-menu .context-menu-btn:last-child {
+  margin-bottom: 5px;
+}
+.context-menu .context-menu-btn:hover {
+  background-color: #161616;
+}
+.context-menu .context-menu-btn:active {
+  filter: brightness(0.8);
+}
+
+@keyframes hide {
+  0% {
+    opacity: 1;
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    display: none;
+  }
+}
+@keyframes show {
+  0% {
+    display: flex;
+  }
+  1% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 html, body {
   margin: 0;
   padding: 0;

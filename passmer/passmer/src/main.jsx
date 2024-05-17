@@ -46,6 +46,21 @@ function Main() {
       }
     }
 
+    let contextMenuAlreadyTriggered = false;
+    const hideCustomContextMenus = (e) => {
+      if (contextMenuAlreadyTriggered) {
+        return;
+      }
+      contextMenuAlreadyTriggered = true;
+
+      const event = new Event('resetContextMenus');
+      window.dispatchEvent(event);
+
+      setTimeout(() => {
+        contextMenuAlreadyTriggered = false;
+      }, 1000);
+    }
+
     let isReleaseMode = true;
     if (process.env.NODE_ENV === 'development') {
       isReleaseMode = false;
@@ -60,6 +75,10 @@ function Main() {
       window.addEventListener('dragstart', preventImageDrag);
     }
 
+    window.addEventListener('click', hideCustomContextMenus);
+    window.addEventListener('contextmenu', hideCustomContextMenus);
+    window.addEventListener('blur', hideCustomContextMenus);
+
     invoke('show_window');
     return () => { 
       if (isReleaseMode) {
@@ -69,6 +88,10 @@ function Main() {
         window.removeEventListener('contextmenu', preventContextMenu);
         window.removeEventListener('dragstart', preventImageDrag);
       }
+
+      window.removeEventListener('click', hideCustomContextMenus);
+      window.removeEventListener('contextmenu', hideCustomContextMenus);
+      window.removeEventListener('blur', hideCustomContextMenus);
     };
   }, []);
 
