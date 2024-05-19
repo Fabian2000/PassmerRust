@@ -43,8 +43,6 @@ function Login() {
         Invokes.loadDb(e.target.value);
         navigate('/sidebar', { replace: true });
       });
-
-      // TODO: Validate password
     }
   }
 

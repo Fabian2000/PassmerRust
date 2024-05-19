@@ -34,3 +34,38 @@ html {
 .bg-transparent {
     background-color: transparent;
 }
+
+.app-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.window-fade-enter { /* Entering starts */
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1.1);
+}
+
+.window-fade-enter-active { /* Entering ends */
+    opacity: 1;
+    transform: scale(1);
+    border-radius: 0;
+    transition: opacity 300ms, transform 300ms;
+}
+
+.window-fade-exit { /* Exiting starts */
+    opacity: 1;
+    border-radius: 0;
+    transform: scale(1);
+}
+
+.window-fade-exit-active { /* Exiting ends */
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1.1);
+    transition: opacity 300ms, transform 300ms;
+}

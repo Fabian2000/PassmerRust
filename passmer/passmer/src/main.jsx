@@ -1,11 +1,12 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Login from './login';
 import Sidebar from './sidebar';
 import { invoke } from '@tauri-apps/api';
 
-function Main() {
+export function Main() {
   useEffect(() => {
 
     const preventCtrl = (e) => {
@@ -47,7 +48,7 @@ function Main() {
     }
 
     let contextMenuAlreadyTriggered = false;
-    const hideCustomContextMenus = (e) => {
+    const hideCustomContextMenus = () => {
       if (contextMenuAlreadyTriggered) {
         return;
       }
@@ -62,6 +63,7 @@ function Main() {
     }
 
     let isReleaseMode = true;
+    // eslint-disable-next-line no-undef
     if (process.env.NODE_ENV === 'development') {
       isReleaseMode = false;
       console.log('Development mode');
@@ -95,21 +97,39 @@ function Main() {
     };
   }, []);
 
+  const location = useLocation();
+
   return (
-      // <React.StrictMode> <- Makes double calls. WTF. Useless. That proves nothing, but destroys everything. Double event handling and everything is not the right way to prove things!
-      // My explanation of React.StrictMode:
-      // StrictMode is a tool for highlighting potential problems in an application. Like Fragment, StrictMode does not render any visible UI. It activates additional checks and warnings for its descendants.
-      // This checks do the following:
-      // They create double events, double data and more problems than they solve. They are not the right. Whoever invented this: Shame on you. :)
-      // And no, I will not discuss about it. It's a fact. With strict mode, I create more potential security problems than I solve (Even if they are only during development).
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login/>} />
-          <Route path="/sidebar" element={<Sidebar/>} />
-        </Routes>
-      </Router>
-    /*</React.StrictMode>*/
+    <div className="app-container">
+      <TransitionGroup>
+        <CSSTransition
+          key={location.key}
+          timeout={300}
+          classNames="window-fade"
+        >
+          {/*<React.StrictMode> <- Makes double calls. WTF. Useless. That proves nothing, but destroys everything. Double event handling and everything is not the right way to prove things!
+          My explanation of React.StrictMode:
+          StrictMode is a tool for highlighting potential problems in an application. Like Fragment, StrictMode does not render any visible UI. It activates additional checks and warnings for its descendants.
+          This checks do the following:
+          They create double events, double data and more problems than they solve. They are not the right. Whoever invented this: Shame on you. :)
+          And no, I will not discuss about it. It's a fact. With strict mode, I create more potential security problems than I solve (Even if they are only during development).*/}
+            <Routes>
+              <Route path="/" element={<Login/>} />
+              <Route path="/sidebar" element={<Sidebar/>} />
+            </Routes>
+        {/*</React.StrictMode>*/}
+        </CSSTransition>
+      </TransitionGroup>
+    </div>
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<Main />);
+function App() {
+  return (
+    <Router>
+      <Main />
+    </Router>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);

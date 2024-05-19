@@ -74,7 +74,7 @@ input:focus {
 }
 
 .sidebar-second {
-  width: 100%; /*250px sidebar, 100% full-page*/
+  width: 250px; /*250px sidebar, 100% full-page*/
   height: 100dvh;
   display: flex;
   justify-content: center;
@@ -88,12 +88,28 @@ input:focus {
   border-radius: 7px;
   background-color: #202020;
 }
+.sidebar-second .sidebar-view .search-input-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  max-height: 1px;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+}
+.sidebar-second .sidebar-view .search-input-wrapper.show {
+  grid-template-rows: 1fr;
+  max-height: 100%;
+}
 .sidebar-second .sidebar-view .search-input {
   margin: 0 auto;
   display: block;
   margin-bottom: 20px;
   background-color: #303030;
   color: #ffffff;
+  width: calc(100% - 2 * 10px * 3); /* With * 3, we can keep 0 auto for centering and use margin like this. */
+  display: none;
+  opacity: 0;
+  animation: fade-out-search 0.5s ease-in-out forwards;
+  overflow: hidden;
 }
 .sidebar-second .sidebar-view .search-input::-moz-selection {
   background-color: #161616 !important;
@@ -102,6 +118,11 @@ input:focus {
 .sidebar-second .sidebar-view .search-input::selection {
   background-color: #161616 !important;
   color: #ffffff;
+}
+.sidebar-second .sidebar-view .search-input.show {
+  display: block;
+  opacity: 1;
+  animation: fade-in-search 0.5s ease-in-out forwards;
 }
 @container (max-width: 250px) {
   .sidebar-second .sidebar-view {
@@ -280,6 +301,40 @@ input:focus {
   height: 25px;
 }
 
+@keyframes fade-in-search {
+  0% {
+    display: block;
+    margin-top: -100%;
+    opacity: 0;
+  }
+  1% {
+    display: block;
+    margin-top: 0 auto;
+    opacity: 0;
+  }
+  100% {
+    display: block;
+    margin-top: 0 auto;
+    opacity: 1;
+  }
+}
+@keyframes fade-out-search {
+  0% {
+    display: block;
+    margin-top: 0 auto;
+    opacity: 1;
+  }
+  99% {
+    display: block;
+    margin-top: -100%;
+    opacity: 0;
+  }
+  100% {
+    display: none;
+    margin-top: -100%;
+    opacity: 0;
+  }
+}
 .context-menu {
   position: fixed;
   display: none;
@@ -370,4 +425,39 @@ html {
 
 .bg-transparent {
   background-color: transparent;
+}
+
+.app-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.window-fade-enter { /* Entering starts */
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1.1);
+}
+
+.window-fade-enter-active { /* Entering ends */
+  opacity: 1;
+  transform: scale(1);
+  border-radius: 0;
+  transition: opacity 300ms, transform 300ms;
+}
+
+.window-fade-exit { /* Exiting starts */
+  opacity: 1;
+  border-radius: 0;
+  transform: scale(1);
+}
+
+.window-fade-exit-active { /* Exiting ends */
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1.1);
+  transition: opacity 300ms, transform 300ms;
 }/*# sourceMappingURL=main.css.map */

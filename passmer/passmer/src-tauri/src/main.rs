@@ -1,11 +1,11 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use lazy_static::lazy_static;
+use named_lock::NamedLock;
+use open;
 use rfd::{MessageDialog, MessageLevel};
 use std::process::exit;
 use tauri::Manager;
-use named_lock::NamedLock;
 
 mod code;
 mod database;
@@ -21,7 +21,7 @@ fn main() {
         exit(1);
     };
 
-    let Ok(lock_guard) = lock.try_lock() else {
+    let Ok(_lock_guard) = lock.try_lock() else {
         MessageDialog::new()
             .set_title("Error")
             .set_description("Another instance of Passmer is already running")
@@ -47,6 +47,8 @@ fn main() {
             database::passmer::save_db,
             database::passmer::db_exists,
             code::sidebar::get_sidebar_data,
+            code::login::logout,
+            open,
         ])
         .run(tauri::generate_context!());
 
@@ -61,5 +63,10 @@ fn main() {
                 .show();
             exit(1);
         }
+    }
+
+    #[tauri::command]
+    fn open(link: String) {
+        open::that(link).unwrap();
     }
 }

@@ -23,7 +23,7 @@
 }
 
 .sidebar-second {
-    width: 100%; /*250px sidebar, 100% full-page*/
+    width: 250px; /*250px sidebar, 100% full-page*/
     height: 100dvh;
     display: flex;
     justify-content: center;
@@ -36,12 +36,30 @@
         border-radius: $radius;
         background-color: $bg-sidebar-color;
 
+        .search-input-wrapper {
+            display: grid;
+            grid-template-rows: 0fr;
+            max-height: 1px;
+            overflow: hidden;
+            transition: all 0.5s ease-in-out;
+
+            &.show {
+                grid-template-rows: 1fr;
+                max-height: 100%;
+            }
+        }
+
         .search-input {
             margin: 0 auto;
             display: block;
             margin-bottom: $margin;
             background-color: $input-color;
             color: $input-text-color;
+            width: calc(100% - (2 * #{$padding}) * 3); /* With * 3, we can keep 0 auto for centering and use margin like this. */
+            display: none;
+            opacity: 0;
+            animation: fade-out-search 0.5s ease-in-out forwards;
+            overflow: hidden;
     
             &::-moz-selection {
                 background-color: $primary-color!important;
@@ -51,6 +69,12 @@
             &::selection {
                 background-color: $primary-color!important;
                 color: $input-text-color;
+            }
+
+            &.show {
+                display: block;
+                opacity: 1;
+                animation: fade-in-search 0.5s ease-in-out forwards;
             }
         }
     }
@@ -252,5 +276,41 @@
             width: 25px;
             height: 25px;
         }
+    }
+}
+
+@keyframes fade-in-search {
+    0% {
+        display: block;
+        margin-top: -100%;
+        opacity: 0;
+    }
+    1% {
+        display: block;
+        margin-top: 0 auto;
+        opacity: 0;
+    }
+    100% {
+        display: block;
+        margin-top: 0 auto;
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out-search {
+    0% {
+        display: block;
+        margin-top: 0 auto;
+        opacity: 1;
+    }
+    99% {
+        display: block;
+        margin-top: -100%;
+        opacity: 0;
+    }
+    100% {
+        display: none;
+        margin-top: -100%;
+        opacity: 0;
     }
 }
