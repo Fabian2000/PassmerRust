@@ -52,7 +52,9 @@ pub fn load_db(key: String) {
 
 #[tauri::command]
 pub fn save_db() {
+    println!("Saving DB into file - now");
     let db = GLOBAL_PASSMER_DB.lock().unwrap();
+    println!("After Mutex");
     let db = db.as_ref();
     let key = DB_KEY.lock().unwrap();
     let key = key.as_ref();

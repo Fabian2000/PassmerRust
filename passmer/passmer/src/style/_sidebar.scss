@@ -23,7 +23,7 @@
 }
 
 .sidebar-second {
-    width: 250px; /*250px sidebar, 100% full-page*/
+    width: 100%; /*250px sidebar, 100% full-page*/
     height: 100dvh;
     display: flex;
     justify-content: center;
@@ -35,12 +35,15 @@
         max-height: 90%;
         border-radius: $radius;
         background-color: $bg-sidebar-color;
+        display: flex;
+        flex-direction: column;
 
         .search-input-wrapper {
             display: grid;
             grid-template-rows: 0fr;
             max-height: 1px;
             overflow: hidden;
+            padding-bottom: $margin;
             transition: all 0.5s ease-in-out;
 
             &.show {
@@ -58,6 +61,7 @@
             width: calc(100% - (2 * #{$padding}) * 3); /* With * 3, we can keep 0 auto for centering and use margin like this. */
             display: none;
             opacity: 0;
+            padding: $margin;
             animation: fade-out-search 0.5s ease-in-out forwards;
             overflow: hidden;
     
@@ -161,6 +165,68 @@
         border-radius: $radius;
         box-shadow: 0 0 10px 5px $primary-color-lighter;
         /*transform: rotate(-180deg);*/
+    }
+}
+
+.sidebar-items {
+    flex-grow: 1;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $primary-color;
+        border-radius: $radius;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: $bg-sidebar-color;
+        border-radius: $radius;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: $primary-color-lighter;
+    }
+
+    .sidebar-item {
+        background-color: inherit;
+        background: linear-gradient(90deg, $primary-color-lighter 0%, $bg-sidebar-color 1%, $bg-sidebar-color 100%);
+        margin-left: $padding;
+        margin-right: $padding;
+        margin-bottom: $margin;
+        padding: calc(#{$padding} / 2);
+        border-radius: $radius;
+        border-left: $primary-color-lighter 5px solid;
+        transition: all 0.25s ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+            background-color: $primary-color-lighter;
+            background: linear-gradient(90deg, $primary-color-lighter 0%, $bg-sidebar-color 75%, $bg-sidebar-color 100%);
+            border-left: $primary-color 6px solid;
+            padding-left: calc(#{$padding} / 2 - 1px);
+        }
+
+        &:active {
+            background-color: $primary-color-lighter;
+            background: linear-gradient(90deg, $primary-color-lighter 0%, $primary-color-lighter 75%, $primary-color-lighter 100%);
+            border-left: $primary-color 6px solid;
+            padding-left: calc(#{$padding} / 2 - 1px);
+        }
+
+        .item-title {
+            font-size: 16pt;
+            font-weight: bold;
+            margin-left: $padding;
+            margin-right: $padding;
+            margin-top: $padding;
+            margin-bottom: $padding;
+            text-wrap: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 }
 
@@ -314,3 +380,5 @@
         opacity: 0;
     }
 }
+
+@import 'addSection';

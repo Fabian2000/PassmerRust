@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Login from './login';
 import Sidebar from './sidebar';
+import Fields from './fields';
 import { invoke } from '@tauri-apps/api';
 
 export function Main() {
@@ -80,6 +81,7 @@ export function Main() {
     window.addEventListener('click', hideCustomContextMenus);
     window.addEventListener('contextmenu', hideCustomContextMenus);
     window.addEventListener('blur', hideCustomContextMenus);
+    window.addEventListener('scroll', hideCustomContextMenus);
 
     invoke('show_window');
     return () => { 
@@ -94,6 +96,7 @@ export function Main() {
       window.removeEventListener('click', hideCustomContextMenus);
       window.removeEventListener('contextmenu', hideCustomContextMenus);
       window.removeEventListener('blur', hideCustomContextMenus);
+      window.removeEventListener('scroll', hideCustomContextMenus);
     };
   }, []);
 
@@ -116,6 +119,7 @@ export function Main() {
             <Routes>
               <Route path="/" element={<Login/>} />
               <Route path="/sidebar" element={<Sidebar/>} />
+              <Route path="/fields/:sectionId" element={<Fields />} />
             </Routes>
         {/*</React.StrictMode>*/}
         </CSSTransition>

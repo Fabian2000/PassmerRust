@@ -49,6 +49,11 @@ fn main() {
             code::sidebar::get_sidebar_data,
             code::login::logout,
             open,
+            database::commands::add_new_section,
+            database::commands::is_valid_section_name,
+            database::commands::delete_section,
+            database::commands::rename_section,
+            database::commands::duplicate_section,
         ])
         .run(tauri::generate_context!());
 
@@ -57,7 +62,7 @@ fn main() {
         Ok(_) => {}
         Err(e) => {
             MessageDialog::new()
-                .set_title("Error")
+                .set_title("Passmer Error")
                 .set_description(format!("{}", e))
                 .set_level(MessageLevel::Error)
                 .show();

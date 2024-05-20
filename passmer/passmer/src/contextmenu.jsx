@@ -18,25 +18,27 @@ export const setContextMenuLocation = (e) => {
     let containerHeight = containerRect.height;
     
     // Context menu size
-    let contextMenu = document.querySelector('.context-menu');
-    let anyContextMenuVisible = document.querySelector('.context-menu.show'); // To prevent location change if already visible
-    
-    if (!contextMenu || anyContextMenuVisible) {
-        return;
-    }
-    
-    let contextMenuWidth = contextMenu.offsetWidth;
-    let contextMenuHeight = contextMenu.offsetHeight;
-    
-    // If context menu is going to be out of container, move it inside
-    if (x + contextMenuWidth > containerWidth) {
-        x = containerWidth - contextMenuWidth;
-    }
-    if (y + contextMenuHeight > containerHeight) {
-        y = containerHeight - contextMenuHeight;
-    }
-    
-    // Set the CSS variables for context menu position
-    contextMenu.style.setProperty('--context-menu-x', `${x}px`);
-    contextMenu.style.setProperty('--context-menu-y', `${y}px`);
+    let contextMenus = document.querySelectorAll('.context-menu');
+    contextMenus.forEach((contextMenu) => {
+        let anyContextMenuVisible = document.querySelector('.context-menu.show'); // To prevent location change if already visible
+        
+        if (!contextMenu || anyContextMenuVisible) {
+            return;
+        }
+        
+        let contextMenuWidth = contextMenu.offsetWidth;
+        let contextMenuHeight = contextMenu.offsetHeight;
+        
+        // If context menu is going to be out of container, move it inside
+        if (x + contextMenuWidth > containerWidth) {
+            x = containerWidth - contextMenuWidth;
+        }
+        if (y + contextMenuHeight > containerHeight) {
+            y = containerHeight - contextMenuHeight;
+        }
+        
+        // Set the CSS variables for context menu position
+        contextMenu.style.setProperty('--context-menu-x', `${x}px`);
+        contextMenu.style.setProperty('--context-menu-y', `${y}px`);
+    });
 };

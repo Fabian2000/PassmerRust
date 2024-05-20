@@ -74,7 +74,7 @@ input:focus {
 }
 
 .sidebar-second {
-  width: 250px; /*250px sidebar, 100% full-page*/
+  width: 100%; /*250px sidebar, 100% full-page*/
   height: 100dvh;
   display: flex;
   justify-content: center;
@@ -87,12 +87,15 @@ input:focus {
   max-height: 90%;
   border-radius: 7px;
   background-color: #202020;
+  display: flex;
+  flex-direction: column;
 }
 .sidebar-second .sidebar-view .search-input-wrapper {
   display: grid;
   grid-template-rows: 0fr;
   max-height: 1px;
   overflow: hidden;
+  padding-bottom: 20px;
   transition: all 0.5s ease-in-out;
 }
 .sidebar-second .sidebar-view .search-input-wrapper.show {
@@ -108,6 +111,7 @@ input:focus {
   width: calc(100% - 2 * 10px * 3); /* With * 3, we can keep 0 auto for centering and use margin like this. */
   display: none;
   opacity: 0;
+  padding: 20px;
   animation: fade-out-search 0.5s ease-in-out forwards;
   overflow: hidden;
 }
@@ -200,6 +204,60 @@ input:focus {
   border-radius: 7px;
   box-shadow: 0 0 10px 5px #292929;
   /*transform: rotate(-180deg);*/
+}
+
+.sidebar-items {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+.sidebar-items::-webkit-scrollbar {
+  width: 10px;
+}
+.sidebar-items::-webkit-scrollbar-thumb {
+  background-color: #161616;
+  border-radius: 7px;
+}
+.sidebar-items::-webkit-scrollbar-track {
+  background-color: #202020;
+  border-radius: 7px;
+}
+.sidebar-items::-webkit-scrollbar-thumb:hover {
+  background-color: #292929;
+}
+.sidebar-items .sidebar-item {
+  background-color: inherit;
+  background: linear-gradient(90deg, #292929 0%, #202020 1%, #202020 100%);
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+  padding: calc(10px / 2);
+  border-radius: 7px;
+  border-left: #292929 5px solid;
+  transition: all 0.25s ease-in-out;
+  cursor: pointer;
+}
+.sidebar-items .sidebar-item:hover {
+  background-color: #292929;
+  background: linear-gradient(90deg, #292929 0%, #202020 75%, #202020 100%);
+  border-left: #161616 6px solid;
+  padding-left: calc(10px / 2 - 1px);
+}
+.sidebar-items .sidebar-item:active {
+  background-color: #292929;
+  background: linear-gradient(90deg, #292929 0%, #292929 75%, #292929 100%);
+  border-left: #161616 6px solid;
+  padding-left: calc(10px / 2 - 1px);
+}
+.sidebar-items .sidebar-item .item-title {
+  font-size: 16pt;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @keyframes sidebar-btn-before-sizer {
@@ -335,6 +393,139 @@ input:focus {
     opacity: 0;
   }
 }
+.add-section-wrapper {
+  display: none;
+  justify-content: center;
+  align-items: start;
+  position: fixed;
+  inset: 0;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  animation: fade-out-add-section-wrapper 0.5s ease-in-out forwards;
+}
+.add-section-wrapper .add-section {
+  width: 300px;
+  margin-top: -100%;
+  animation: slide-out-add-section 0.5s ease-in-out forwards;
+  padding: 20px;
+  background-color: #1b1b1b;
+  border-radius: 7px;
+  transition: all 0.5s ease-in-out;
+}
+.add-section-wrapper .add-section .add-section-input {
+  width: calc(100% - 20px);
+  margin-bottom: 20px;
+  background-color: #303030;
+  color: #ffffff;
+}
+.add-section-wrapper .add-section .add-section-input::-moz-selection {
+  background-color: #161616 !important;
+  color: #ffffff;
+}
+.add-section-wrapper .add-section .add-section-input::selection {
+  background-color: #161616 !important;
+  color: #ffffff;
+}
+.add-section-wrapper .add-section .title {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.add-section-wrapper .add-section .btn-collection {
+  display: flex;
+  justify-content: end;
+  margin-top: 20px;
+}
+.add-section-wrapper .add-section .btn-collection .btn {
+  width: 100px;
+  padding: 10px;
+  border-radius: 7px;
+  background-color: #161616;
+  color: #ffffff;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+.add-section-wrapper .add-section .btn-collection .btn:hover {
+  background-color: #292929;
+}
+.add-section-wrapper .add-section .btn-collection .btn:disabled {
+  background-color: #1b1b1b;
+  cursor: not-allowed;
+}
+.add-section-wrapper .add-section .btn-collection .btn:nth-last-child(1) {
+  margin-left: 20px;
+}
+.add-section-wrapper.show {
+  display: flex;
+  animation: fade-in-add-section-wrapper 0.5s ease-in-out forwards;
+}
+.add-section-wrapper.show .add-section {
+  margin-top: 20px;
+  animation: slide-in-add-section 0.5s ease-in-out forwards;
+  transition: all 0.5s ease-in-out;
+}
+
+@keyframes slide-in-add-section {
+  from {
+    margin-top: -100%;
+  }
+  to {
+    margin-top: 20px;
+  }
+}
+@keyframes slide-out-add-section {
+  from {
+    margin-top: 20px;
+  }
+  to {
+    margin-top: -100%;
+  }
+}
+@keyframes fade-in-add-section-wrapper {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+  1% {
+    display: flex;
+    opacity: 0;
+  }
+  100% {
+    display: flex;
+    opacity: 1;
+  }
+}
+@keyframes fade-out-add-section-wrapper {
+  0% {
+    display: flex;
+    opacity: 1;
+  }
+  99% {
+    display: flex;
+    opacity: 0;
+  }
+  100% {
+    display: none;
+    opacity: 0;
+  }
+}
+.fields-layout {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.fields-layout .sidebar-wrapper {
+  width: 300px;
+  height: 100dvh;
+}
+.fields-layout .fields {
+  flex-grow: 1;
+  max-height: 100dvh;
+  height: 100dvh;
+  max-width: calc(100dvw - 300px);
+  width: calc(100dvw - 300px);
+}
+
 .context-menu {
   position: fixed;
   display: none;

@@ -1,0 +1,18 @@
+.fields-layout {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+
+    .sidebar-wrapper {
+        width: 300px;
+        height: 100dvh;
+    }
+
+    .fields {
+        flex-grow: 1;
+        max-height: 100dvh;
+        height: 100dvh;
+        max-width: calc(100dvw - 300px);
+        width: calc(100dvw - 300px);
+    }
+}
