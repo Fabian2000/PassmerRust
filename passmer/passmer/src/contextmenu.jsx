@@ -7,35 +7,41 @@ export const setContextMenuLocation = (e) => {
     }
     
     // Get the bounding rectangle of the container
-    const containerRect = container.getBoundingClientRect();
+    //const containerRect = container.getBoundingClientRect();
     
     // Calculate the relative cursor position within the container
-    let x = e.clientX - containerRect.left;
-    let y = e.clientY - containerRect.top;
+    let x = e.clientX;// - containerRect.left;
+    let y = e.clientY;// - containerRect.top;
     
     // Container size
-    let containerWidth = containerRect.width;
-    let containerHeight = containerRect.height;
+    /*let containerWidth = containerRect.width;
+    let containerHeight = containerRect.height;*/
     
     // Context menu size
     let contextMenus = document.querySelectorAll('.context-menu');
     contextMenus.forEach((contextMenu) => {
-        let anyContextMenuVisible = document.querySelector('.context-menu.show'); // To prevent location change if already visible
+        //let anyContextMenuVisible = document.querySelector('.context-menu.show'); // To prevent location change if already visible
         
-        if (!contextMenu || anyContextMenuVisible) {
+        if (!contextMenu /*|| anyContextMenuVisible*/) {
             return;
         }
         
+        // Show the context menu to get its size (because it's hidden by default which causes offsetWidth and offsetHeight to be 0)
+        contextMenu.classList.add('temp-show');
         let contextMenuWidth = contextMenu.offsetWidth;
         let contextMenuHeight = contextMenu.offsetHeight;
-        
+        contextMenu.classList.remove('temp-show');
+
         // If context menu is going to be out of container, move it inside
-        if (x + contextMenuWidth > containerWidth) {
-            x = containerWidth - contextMenuWidth;
+        if (x + contextMenuWidth > window.innerWidth) {
+            x = window.innerWidth - contextMenuWidth;
         }
-        if (y + contextMenuHeight > containerHeight) {
-            y = containerHeight - contextMenuHeight;
+        // log y + contextMenuHeight, window.innerHeight
+        console.log(y + contextMenuHeight, window.innerHeight);
+        if (y + contextMenuHeight > window.innerHeight) {
+            y = window.innerHeight - contextMenuHeight;
         }
+        console.log("Coords: ", x, y);
         
         // Set the CSS variables for context menu position
         contextMenu.style.setProperty('--context-menu-x', `${x}px`);

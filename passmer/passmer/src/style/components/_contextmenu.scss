@@ -21,6 +21,15 @@
         animation: show .25s ease-in-out forwards;
     }
 
+    &.temp-show { /* Temporary show for JS */
+        display: block;
+        visibility: hidden;
+    }
+
+    &.x-correction {
+        transform: translateX(-100%);
+    }
+
     .context-menu-btn {
         background-color: $bg-color;
         width: 100%;

@@ -6,6 +6,7 @@ pub struct Field {
     pub field_title: String,
     pub field_type: FieldTypes,
     pub field_value: String,
+    pub field_order: i32,
 }
 
 impl Drop for Field {
@@ -40,4 +41,5 @@ pub enum FieldTypes {
     Time,
     DateTime,
     Notes,
+    Split, // not an input, just a splitter for next line
 }

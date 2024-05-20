@@ -52,7 +52,7 @@ function Login() {
     <>
       <div>
         <div className="login">
-          <img className='login logo' src={passmerLogo} alt="Passmer Logo" />
+          <img className="login logo" src={passmerLogo} alt="Passmer Logo" />
           <input className="login password-input" type="password" placeholder="Pin or Password" value={password} onChange={bindPasswordValue} onKeyDown={ValidateKeyPressed} autoComplete={'passmer' + random} onBlur={reFocus} autoFocus />
         </div>
       </div>

@@ -179,8 +179,8 @@ function Sidebar() {
                 <FontAwesomeIcon icon={faEllipsisVertical} />
               </button>
             </div>
-            <div className={`context-menu ${(showOptions ? "show" : "")}` }>
-              <button className="context-menu-btn">Check for Update</button>
+            <div className={`context-menu x-correction ${(showOptions ? "show" : "")}` }>
+              <button className="context-menu-btn" onClick={ () => Invokes.msgBox("This program is currently in early BETA testing. Some features, including the update check, are not yet available. For more information, please visit https://fabi-sc.de. The current version is 0.1.0.", Invokes.msgBoxLevel.INFO) }>Check for Update</button>
               <button className="context-menu-btn" onClick={ () => Invokes.open("https://fabi-sc.de") }>Website</button>
             </div>
 
@@ -292,6 +292,10 @@ function Sidebar() {
               <button className="btn" onClick={ () => {
                 setShowDeleteSection(false);
                 Invokes.deleteSection(lastSelectedSection);
+                if (sectionId == lastSelectedSection) {
+                  navigate('/sidebar', { replace: true });
+                  return;
+                }
                 setTimeout(() => {
                   reRenderSidebarItems(search);
                 }, 1000);

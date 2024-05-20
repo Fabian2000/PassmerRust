@@ -1,22 +1,268 @@
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Sidebar from './sidebar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft, faPlus, faParagraph, faFont, faKey, faLeftLong, faRightLong, faGear, faTrash, faRightLeft, faPen, faEyeSlash, faCopy  } from '@fortawesome/free-solid-svg-icons';
+import * as Invokes from './invokes';
 
 export function Fields() {
     const { sectionId } = useParams();
+    const navigate = useNavigate();
+    const [fields, setFields] = useState([]);
+    const [showAddFieldPopup, setShowAddFieldPopup] = useState(false);
+    const [showOptionFieldPopup, setShowOptionFieldPopup] = useState(false);
+    const [showDeleteFieldPopup, setShowDeleteFieldPopup] = useState(false);
+    const typeSelectionPopup = useRef(null);
+    const optionFieldPopup = useRef(null);
+    const deleteFieldPopup = useRef(null);
+    const [newFieldTitle, setNewFieldTitle] = useState("");
+    const [lastSelectedFieldId, setLastSelectedFieldId] = useState(-1);
 
     useEffect(() => {
-        console.log(`Fields for section ${sectionId}`);
+        reRenderFieldItems(sectionId);
     }, [sectionId]);
 
+    const reRenderFieldItems = (sectionId) => {
+        Invokes.getFields(parseInt(sectionId)).then((fields) => {
+            fields.sort((a, b) => a.order_id - b.order_id);
+            setFields(fields);
+            console.log(fields);
+        });
+    }
+
+    const bindFieldTitleValue = (e) => {
+        setNewFieldTitle(e.target.value);
+    }
+
+    const random = Math.random().toString(36).substring(7);
+
+    const swapFieldItemsLeft = (sectionId, fieldId) => {
+        let fieldIndex = fields.findIndex((item) => item.field_id == fieldId);
+        if (fieldIndex > 0) {
+            Invokes.swapOrderIds(parseInt(sectionId), fieldId, fields[fieldIndex - 1].field_id).then(() => {
+                reRenderFieldItems(sectionId);
+            });
+        }
+    }
+
+    const swapFieldItemsRight = (sectionId, fieldId) => {
+        let fieldIndex = fields.findIndex((item) => item.field_id == fieldId);
+        if (fieldIndex < fields.length - 1) {
+            Invokes.swapOrderIds(parseInt(sectionId), fieldId, fields[fieldIndex + 1].field_id).then(() => {
+                reRenderFieldItems(sectionId);
+            });
+        }
+    }
+
+    const deleteFieldItem = (sectionId, fieldId) => {
+        Invokes.deleteField(parseInt(sectionId), fieldId).then(() => {
+            setLastSelectedFieldId(-1);
+            reRenderFieldItems(sectionId);
+        });
+    }
+
+    const customInputLoad = (id, value) => {
+        if (document.getElementById(id)) {
+            document.getElementById(id).value = value;
+        }
+    };
+
     return (
-        <div className='fields-layout'>
-            <div className='sidebar-wrapper'>
+        <div className="fields-layout">
+            <div className="sidebar-wrapper">
                 <Sidebar />
             </div>
-            <div className='fields'>
-                <div className='fields-header'>
-                    <h1>Fields</h1>
+            <div className="fields">
+                <div className="fields-header">
+                    <button className="btn animate-whoosh" onClick={ ()=> navigate("/sidebar", { "replace" : true }) }>
+                        <FontAwesomeIcon icon={faArrowLeft} />
+                    </button>
+                    <button className="btn animate-wiggle" onClick={
+                        () => {
+                            setShowAddFieldPopup(!showAddFieldPopup);
+                            if (typeSelectionPopup.current) {
+                                setTimeout(() => {
+                                    typeSelectionPopup.current.focus();
+                                }, 1000);
+                            }
+                        }
+                    
+                    }>
+                        <FontAwesomeIcon icon={faPlus} />
+                    </button>
+                </div>
+
+                {
+                    // Add field popup
+                }
+                <div className={`add-field-popup ${ showAddFieldPopup ? "show" : "" }`} tabIndex={0} ref={typeSelectionPopup} onKeyDown={
+                    (e) => {
+                        if (e.key === "Escape") {
+                            setShowAddFieldPopup(false);
+                            setNewFieldTitle("");
+                        }
+                    }
+                } onClick={(e) => {
+                    if (e.target.tagName != "INPUT" && e.target.tagName != "BUTTON") { 
+                        setShowAddFieldPopup(false);
+                        setNewFieldTitle("");
+                    }}}>
+                    <div className="add-field-sidebar">
+                        <h2 className="title">Choose a Field Type:</h2>
+                        <input type="text" className="input" placeholder="Name the field" value={newFieldTitle} onChange={bindFieldTitleValue} autoComplete={'passmer' + random} />
+                        <button className="option" onClick={ () => {
+                            Invokes.addField(parseInt(sectionId), newFieldTitle, "", Invokes.fieldTypes.TEXT).then(() => {
+                                setNewFieldTitle("");
+                                setShowAddFieldPopup(false);
+                                setTimeout(() => {
+                                    reRenderFieldItems(sectionId);
+                                }, 1000);
+                            });
+                        } }><FontAwesomeIcon icon={faFont} /> Text</button>
+                        <button className="option" onClick={ () => {
+                            Invokes.addField(parseInt(sectionId), newFieldTitle, "", Invokes.fieldTypes.PASSWORD).then(() => {
+                                setNewFieldTitle("");
+                                setShowAddFieldPopup(false);
+                                setTimeout(() => {
+                                    reRenderFieldItems(sectionId);
+                                }, 1000);
+                            });
+                        }}><FontAwesomeIcon icon={faKey} /> Password</button>
+                        <button className="option" onClick={ () => {
+                            Invokes.addField(parseInt(sectionId), newFieldTitle, "", Invokes.fieldTypes.SPLIT).then(() => {
+                                setNewFieldTitle("");
+                                setShowAddFieldPopup(false);
+                                setTimeout(() => {
+                                    reRenderFieldItems(sectionId);
+                                }, 1000);
+                            });
+                        }}><FontAwesomeIcon icon={faParagraph} /> Splitter</button>
+                    </div>
+                </div>
+                
+                {
+                    // Option field popup
+                }
+                <div className={`add-field-popup ${ showOptionFieldPopup ? "show" : "" }`} tabIndex={0} ref={optionFieldPopup} onKeyDown={
+                    (e) => {
+                        if (e.key === "Escape") {
+                            setShowOptionFieldPopup(false);
+                            setNewFieldTitle("");
+                        }
+                    }
+                } onClick={(e) => {
+                    if (e.target.tagName != "INPUT" && e.target.tagName != "BUTTON") { 
+                        setShowOptionFieldPopup(false);
+                        setNewFieldTitle("");
+                    }}}>
+                    <div className="add-field-sidebar">
+                        <h2 className="title">Field Options:</h2>
+                        <input type="text" className="input" placeholder="Name the field" value={newFieldTitle} onChange={bindFieldTitleValue} autoComplete={'passmer' + random} />
+                        <button className="option" onClick={ () => {
+                            Invokes.renameField(parseInt(sectionId), lastSelectedFieldId, newFieldTitle);
+                            setShowOptionFieldPopup(false);
+                            setNewFieldTitle("");
+                            setTimeout(() => {
+                                reRenderFieldItems(sectionId);
+                            }, 1000);
+                        } }><FontAwesomeIcon icon={faPen} /> Rename</button>
+                    </div>
+                </div>
+                
+                {
+                    // Delete field popup
+                }
+                <div className={`add-field-popup ${ showDeleteFieldPopup ? "show" : "" }`} tabIndex={0} ref={deleteFieldPopup} onKeyDown={
+                    (e) => {
+                        if (e.key === "Escape") {
+                            setShowDeleteFieldPopup(false);
+                        }
+                    }
+                } onClick={(e) => {
+                    if (e.target.tagName != "BUTTON") { 
+                        setShowDeleteFieldPopup(false);
+                    }}}>
+                    <div className="add-field-sidebar">
+                        <h2 className="title">Delete field?</h2>
+                        <button className="option" onClick={ () => {
+                            deleteFieldItem(sectionId, lastSelectedFieldId);
+                            setShowDeleteFieldPopup(false);
+                        } }>Yes</button>
+                        <button className="option" onClick={ () => {
+                            setShowDeleteFieldPopup(false);
+                        }}>No</button>
+                    </div>
+                </div>
+
+                <div className="fields-content">
+                    {
+                        fields.map((item) => {
+                            if (item.field_type == "Text") {
+                                return (
+                                    <div className="field-text" key={item.field_id} onContextMenu={ () => setLastSelectedFieldId(item.field_id)}>
+                                        <label className="field-label" htmlFor={item.field_id}><FontAwesomeIcon icon={faFont} /> {item.field_title}</label>
+                                        <input className={`field-input ${(lastSelectedFieldId == item.field_id ? "hide" : "show")}`} id={item.field_id} type="text" autoComplete={'passmer' + random} onChange={
+                                            () => {
+                                                Invokes.updateFieldValue(parseInt(sectionId), item.field_id, document.getElementById(item.field_id).value);
+                                            }
+                                        } />
+                                        { customInputLoad(item.field_id, item.field_value) }
+                                        <div className={`field-actions ${(lastSelectedFieldId == item.field_id ? "show" : "hide")}`}>
+                                            <button className="btn" title="Close menu" onClick={ () => setLastSelectedFieldId(-1) }><FontAwesomeIcon icon={faRightLeft} /></button>
+                                            <button className="btn" title="Swap left" onClick={ () => swapFieldItemsLeft(sectionId, item.field_id) }><FontAwesomeIcon icon={faLeftLong} /></button>
+                                            <button className="btn" title="Swap right" onClick={ () => swapFieldItemsRight(sectionId, item.field_id) }><FontAwesomeIcon icon={faRightLong} /></button>
+                                            <button className="btn" title="Options" onClick={ () => { setShowOptionFieldPopup(true); setNewFieldTitle(item.field_title) } }><FontAwesomeIcon icon={faGear} /></button>
+                                            <button className="btn" title="Delete" onClick={ () => setShowDeleteFieldPopup(true) }><FontAwesomeIcon icon={faTrash} /></button>
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            else if (item.field_type == "Password") {
+                                return (
+                                    <div className="field-text" key={item.field_id} onContextMenu={ () => setLastSelectedFieldId(item.field_id)}>
+                                        <label className="field-label" htmlFor={item.field_id}><FontAwesomeIcon icon={faKey} /> {item.field_title}</label>
+                                        <input className={`field-input ${(lastSelectedFieldId == item.field_id ? "hide" : "show")}`} id={item.field_id} type="password" autoComplete={'passmer' + random} onChange={
+                                            () => {
+                                                Invokes.updateFieldValue(parseInt(sectionId), item.field_id, document.getElementById(item.field_id).value);
+                                            }
+                                        } />
+                                        { customInputLoad(item.field_id, item.field_value) }
+                                        <div className={`field-actions ${(lastSelectedFieldId == item.field_id ? "show" : "hide")}`}>
+                                            <button className="btn" title="Close menu" onClick={ () => setLastSelectedFieldId(-1) }><FontAwesomeIcon icon={faRightLeft} /></button>
+                                            <button className="btn" title="Swap left" onClick={ () => swapFieldItemsLeft(sectionId, item.field_id) }><FontAwesomeIcon icon={faLeftLong} /></button>
+                                            <button className="btn" title="Swap right" onClick={ () => swapFieldItemsRight(sectionId, item.field_id) }><FontAwesomeIcon icon={faRightLong} /></button>
+                                            <button className="btn" title="Options" onClick={ () => { setShowOptionFieldPopup(true); setNewFieldTitle(item.field_title) } }><FontAwesomeIcon icon={faGear} /></button>
+                                            <button className="btn" title="Delete" onClick={ () => setShowDeleteFieldPopup(true) }><FontAwesomeIcon icon={faTrash} /></button>
+                                            <button className="btn" title="Toggle password" onClick={ () => {
+                                                document.getElementById(item.field_id).type = (document.getElementById(item.field_id).type == "password" ? "text" : "password");
+                                                setLastSelectedFieldId(-1);
+                                            } }><FontAwesomeIcon icon={faEyeSlash} /></button>
+                                            <button className="btn" title="Copy to clipboard" onClick={ () => {
+                                                Invokes.clipboardCopy(document.getElementById(item.field_id).value);
+                                                setLastSelectedFieldId(-1);
+                                            }
+                                            }><FontAwesomeIcon icon={faCopy} /></button>
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            else if (item.field_type == "Split") {
+                                return (
+                                    <div className="field-split" id={item.field_id} key={item.field_id} onContextMenu={ () => setLastSelectedFieldId(item.field_id)}>
+                                        <FontAwesomeIcon className={`${(lastSelectedFieldId == item.field_id ? "hide" : "show")}`} icon={faParagraph} />
+                                        <div className={`field-actions ${(lastSelectedFieldId == item.field_id ? "show" : "hide")}`}>
+                                            <button className="btn" title="Close menu" onClick={ () => setLastSelectedFieldId(-1) }><FontAwesomeIcon icon={faRightLeft} /></button>
+                                            <button className="btn" title="Swap left" onClick={ () => swapFieldItemsLeft(sectionId, item.field_id) }><FontAwesomeIcon icon={faLeftLong} /></button>
+                                            <button className="btn" title="Swap right" onClick={ () => swapFieldItemsRight(sectionId, item.field_id) }><FontAwesomeIcon icon={faRightLong} /></button>
+                                            <button className="btn" title="Options" onClick={ () => { setShowOptionFieldPopup(true); setNewFieldTitle(item.field_title) } }><FontAwesomeIcon icon={faGear} /></button>
+                                            <button className="btn" title="Delete" onClick={ () => setShowDeleteFieldPopup(true) }><FontAwesomeIcon icon={faTrash} /></button>
+                                        </div>
+                                    </div>
+                                );
+                            }
+                        })
+                    }
+                    
                 </div>
             </div>
         </div>

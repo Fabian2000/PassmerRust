@@ -14,5 +14,290 @@
         height: 100dvh;
         max-width: calc(100dvw - 300px);
         width: calc(100dvw - 300px);
+        background-color: $bg-color;
+
+        .fields-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: $padding;
+            height: 50px;
+            border-bottom: 1px solid $primary-color-lighter;
+            background-color: $bg-sidebar-color;
+
+            .btn {
+                background-color: $primary-color;
+                border-radius: $radius;
+                padding: $padding;
+                cursor: pointer;
+                overflow: hidden;
+                transition: all 0.25s ease-in-out;
+
+                &:hover {
+                    background-color: $primary-color-lighter;
+                }
+
+                &.animate-whoosh svg {
+                    transform: translate(0, 0);
+                    transition: all 0.25s ease-in-out;
+                }
+
+                &.animate-whoosh:hover svg {
+                    animation: fields-whoosh 0.5s ease-in-out forwards;
+                }
+                
+                &.animate-wiggle svg {
+                    transform: scale(1) translate(0, 0);
+                    transition: all 0.25s ease-in-out;
+                }
+
+                &.animate-wiggle:hover svg {
+                    transform: scale(1.2) rotate(0) translate(0);
+                    transform-origin: bottom center;
+                    animation: sidebar-wiggle-effect 0.5s ease-in-out;
+                }
+            }
+        }
+
+        .add-field-popup {
+            position: fixed;
+            inset: 0;
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+            display: none;
+            opacity: 0;
+            transition: all 0.25s ease-in-out;
+            animation: fields-blur-fade-out 0.25s ease-in-out forwards;
+
+            .add-field-sidebar {
+                position: absolute;
+                right: 0;
+                top: 0;
+                margin: 0;
+                width: 300px;
+                height: 100dvh;
+                background-color: $bg-sidebar-color;
+                transform: translateX(100%);
+                transition: all 0.25s ease-in-out;
+                animation: fields-slide-out 0.25s ease-in-out forwards;
+
+                .title {
+                    padding: $padding;
+                    font-size: 16pt;
+                    font-weight: bold;
+                    border-bottom: 1px solid $primary-color-lighter;
+                }
+
+                .input {
+                    width: calc(100% - #{$padding} * 4);
+                    background-color: $input-color;
+                    margin: $padding;
+                }
+
+                .option {
+                    width: calc(100% - #{$padding} * 2);
+                    margin: $padding;
+                    margin-top: 0;
+                    background-color: $primary-color;
+                    text-align: left;
+
+                    &:hover {
+                        background-color: $primary-color-lighter;
+                    }
+                }
+            }
+
+            &.show {
+                display: block;
+                opacity: 1;
+                animation: fields-blur-fade-in 0.25s ease-in-out forwards;
+
+                .add-field-sidebar {
+                    transform: translateX(0);
+                    transition: all 0.25s ease-in-out;
+                    animation: fields-slide-in 0.25s ease-in-out forwards;
+                }
+            }
+        }
+
+        .fields-content {
+            padding: $padding;
+            height: calc(100dvh - 50px);
+            width: calc(100dvw - 300px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid $primary-color-lighter;
+
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: flex-start;
+            align-content: flex-start;
+            flex-wrap: wrap;
+
+            .field-text {
+                display: flex;
+                justify-content: start;
+                flex-direction: column;
+                padding: $padding;
+                border-bottom: 1px solid $primary-color-lighter;
+                width: fit-content;
+                height: 60px;
+                background-color: $bg-sidebar-color;
+                border-radius: $radius;
+                margin-right: $padding;
+                margin-bottom: $padding;
+
+                .hide {
+                    display: none;
+                }
+
+                .show {
+                    display: block;
+                }
+
+                .field-label {
+                    width: 100%;
+                    font-size: 12pt;
+                    font-weight: bold;
+                    padding-right: $padding;
+                    padding-bottom: $padding;
+                    text-wrap: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .field-input {
+                    width: 200px;
+                    padding-left: $padding;
+                    background-color: $input-color;
+                }
+            }
+
+            .field-split {
+                width: 95%;
+                background-color: transparent;
+                border-bottom: $primary-color-lighter 1px solid;
+                margin-bottom: $padding;
+                z-index: 1;
+                
+                .hide {
+                    display: none;
+                }
+
+                .show {
+                    display: block;
+                }
+
+                svg {
+                    opacity: 0.2;
+                }
+            }
+
+            .field-actions {
+                width: 200px;
+                margin-left: $padding;
+                margin-right: $padding;
+
+                .btn {
+                    background-color: $primary-color;
+                    margin-right: $padding;
+                    cursor: pointer;
+                    padding: calc(#{$padding} / 2);
+                    transition: all 0.25s ease-in-out;
+
+                    &:hover {
+                        background-color: $primary-color-lighter;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes fields-whoosh {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    45% {
+        transform: translateX(-300%) translateY(0);
+    }
+    50% {
+        transform: translateX(-300%) translateY(-300%);
+    }
+    51% {
+        transform: translateX(300%) translateY(-300%);
+    }
+    55% {
+        transform: translateX(300%) translateY(0);
+    }
+    100% {
+        transform: translateX(0) translateY(0);
+    }
+}
+
+@keyframes fields-wiggle-effect {
+    0% {
+        transform: translateX(0) rotate(0);
+    }
+    25% {
+        transform: translateX(-2px) rotate(-10deg) skewX(-5deg) skewY(-5deg);
+    }
+    50% {
+        transform: translateX(2px) rotate(10deg) skewX(5deg) skewY(5deg);
+    }
+    75% {
+        transform: translateX(-2px) rotate(-10deg);
+    }
+    100% {
+        transform: translateX(0) rotate(0) scale(1.2);
+    }
+}
+
+@keyframes fields-blur-fade-in {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+    1% {
+        display: block;
+        opacity: 0;
+    }
+    100% {
+        display: block;
+        opacity: 1;
+    }
+}
+
+@keyframes fields-blur-fade-out {
+    0% {
+        display: block;
+        opacity: 1;
+    }
+    99% {
+        display: block;
+        opacity: 0;
+    }
+    100% {
+        display: none;
+        opacity: 0;
+    }
+}
+
+@keyframes fields-slide-in {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes fields-slide-out {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100%);
     }
 }

@@ -38,7 +38,7 @@ pub fn load_db(key: String) {
     let mut db_key = DB_KEY.lock().unwrap();
     *db_key = Some(key);
 
-    let Ok(db) = db_file::load(db_file::DEFAULT_FILENAME, &key) else {
+    let Ok(db) = db_file::load(&db_file::default_filepath(), &key) else {
         MessageDialog::new()
             .set_title("Error")
             .set_description("Unable to load database")
@@ -75,7 +75,11 @@ pub fn save_db() {
         return;
     }
 
-    let Ok(_) = db_file::save(db_file::DEFAULT_FILENAME, key.unwrap(), db.unwrap().clone()) else {
+    let Ok(_) = db_file::save(
+        &db_file::default_filepath(),
+        key.unwrap(),
+        db.unwrap().clone(),
+    ) else {
         MessageDialog::new()
             .set_title("Error")
             .set_description("Unable to save database")
@@ -86,5 +90,5 @@ pub fn save_db() {
 
 #[tauri::command]
 pub fn db_exists() -> bool {
-    db_file::exists(db_file::DEFAULT_FILENAME)
+    db_file::exists(&db_file::default_filepath())
 }

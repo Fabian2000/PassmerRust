@@ -8,7 +8,7 @@ pub fn validate_password(password: String) -> bool {
     let Ok(key) = key.try_into() else {
         return false;
     };
-    db_file::validate(db_file::DEFAULT_FILENAME, &key)
+    db_file::validate(&db_file::default_filepath(), &key)
 }
 
 #[tauri::command]

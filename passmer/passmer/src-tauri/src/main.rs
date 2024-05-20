@@ -1,11 +1,14 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use clipboard::{ClipboardContext, ClipboardProvider};
 use named_lock::NamedLock;
 use open;
 use rfd::{MessageDialog, MessageLevel};
 use std::process::exit;
 use tauri::Manager;
+
+use crate::code::msg_box::msg_box;
 
 mod code;
 mod database;
@@ -54,6 +57,13 @@ fn main() {
             database::commands::delete_section,
             database::commands::rename_section,
             database::commands::duplicate_section,
+            code::fields::get_fields,
+            code::fields::add_field,
+            code::fields::swap_order_ids,
+            code::fields::delete_field,
+            code::fields::rename_field,
+            clipboard_copy,
+            code::fields::update_field_value,
         ])
         .run(tauri::generate_context!());
 
@@ -73,5 +83,18 @@ fn main() {
     #[tauri::command]
     fn open(link: String) {
         open::that(link).unwrap();
+    }
+
+    #[tauri::command]
+    fn clipboard_copy(text: String) {
+        let Ok(mut ctx): Result<ClipboardContext, _> = ClipboardProvider::new() else {
+            println!("Error creating clipboard context");
+            msg_box("Error copying to clipboard".to_string(), "error");
+            return;
+        };
+        if let Err(result) = ctx.set_contents(text) {
+            println!("Error copying to clipboard: {:?}", result);
+            msg_box("Error copying to clipboard".to_string(), "error");
+        }
     }
 }

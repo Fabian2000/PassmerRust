@@ -5,12 +5,28 @@ use rand::RngCore;
 use sha2::{Digest, Sha256};
 use std::fs::OpenOptions;
 use std::io::{Read, Write};
-use std::path::Path;
+use std::path::{Path, PathBuf};
+use tauri::api::path::document_dir;
 
 use super::passmer::Passmer;
 
 // Default filename for the db
-pub const DEFAULT_FILENAME: &str = "passmer.crypt.bin";
+const DEFAULT_FILENAME: &str = "passmer.crypt.bin";
+
+fn get_document_path(filename: &str) -> Option<PathBuf> {
+    document_dir().map(|mut doc_path| {
+        doc_path.push(filename);
+        doc_path
+    })
+}
+
+pub fn default_filepath() -> String {
+    get_document_path(DEFAULT_FILENAME)
+        .unwrap()
+        .to_str()
+        .unwrap()
+        .to_string()
+}
 
 // Saves encrypted data with a nonce into the database file
 pub fn save(filename: &str, key: &[u8; 32], data: Passmer) -> Result<(), String> {

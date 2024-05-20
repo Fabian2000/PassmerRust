@@ -1,7 +1,7 @@
 use tauri::{PhysicalPosition, PhysicalSize, Position, Size};
 
 const LOGIN_SIZE: (i32, i32) = (250, 200);
-const MAIN_SIZE: (i32, i32) = (800, 600);
+const MAIN_SIZE: (i32, i32) = (850, 600);
 
 #[tauri::command]
 pub fn resize_window_for_login(window: tauri::Window) -> Result<(), String> {
