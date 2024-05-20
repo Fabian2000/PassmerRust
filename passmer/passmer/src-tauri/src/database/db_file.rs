@@ -3,10 +3,12 @@ use aes_gcm::{Aes256Gcm, Nonce};
 use rand::rngs::OsRng;
 use rand::RngCore;
 use sha2::{Digest, Sha256};
-use std::fs::OpenOptions;
+use std::fs::{self, OpenOptions};
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 use tauri::api::path::document_dir;
+
+use crate::code::msg_box::msg_box;
 
 use super::passmer::Passmer;
 
@@ -14,10 +16,20 @@ use super::passmer::Passmer;
 const DEFAULT_FILENAME: &str = "passmer.crypt.bin";
 
 fn get_document_path(filename: &str) -> Option<PathBuf> {
-    document_dir().map(|mut doc_path| {
+    if let Some(mut doc_path) = document_dir() {
+        doc_path.push("Passmer");
+        if !doc_path.exists() {
+            if let Err(e) = fs::create_dir(&doc_path) {
+                eprintln!("Failed to create directory: {}", e);
+                msg_box("Unable to create \"Passmer\" folder".to_string(), "error");
+                return None;
+            }
+        }
         doc_path.push(filename);
-        doc_path
-    })
+        Some(doc_path)
+    } else {
+        None
+    }
 }
 
 pub fn default_filepath() -> String {

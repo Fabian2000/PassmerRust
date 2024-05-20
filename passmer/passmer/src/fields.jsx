@@ -83,7 +83,7 @@ export function Fields() {
                             if (typeSelectionPopup.current) {
                                 setTimeout(() => {
                                     typeSelectionPopup.current.focus();
-                                }, 1000);
+                                }, 10);
                             }
                         }
                     
@@ -201,7 +201,7 @@ export function Fields() {
                                 return (
                                     <div className="field-text" key={item.field_id} onContextMenu={ () => setLastSelectedFieldId(item.field_id)}>
                                         <label className="field-label" htmlFor={item.field_id}><FontAwesomeIcon icon={faFont} /> {item.field_title}</label>
-                                        <input className={`field-input ${(lastSelectedFieldId == item.field_id ? "hide" : "show")}`} id={item.field_id} type="text" autoComplete={'passmer' + random} onChange={
+                                        <input className={`field-input ${(lastSelectedFieldId == item.field_id ? "hide" : "show")}`} id={item.field_id} type="text" name={'passmer' + random} autoComplete={'passmer' + random} onChange={
                                             () => {
                                                 Invokes.updateFieldValue(parseInt(sectionId), item.field_id, document.getElementById(item.field_id).value);
                                             }
@@ -221,7 +221,7 @@ export function Fields() {
                                 return (
                                     <div className="field-text" key={item.field_id} onContextMenu={ () => setLastSelectedFieldId(item.field_id)}>
                                         <label className="field-label" htmlFor={item.field_id}><FontAwesomeIcon icon={faKey} /> {item.field_title}</label>
-                                        <input className={`field-input ${(lastSelectedFieldId == item.field_id ? "hide" : "show")}`} id={item.field_id} type="password" autoComplete={'passmer' + random} onChange={
+                                        <input className={`field-input ${(lastSelectedFieldId == item.field_id ? "hide" : "show")}`} id={item.field_id} type="password" name={'passmer' + random} autoComplete={'passmer' + random} onChange={
                                             () => {
                                                 Invokes.updateFieldValue(parseInt(sectionId), item.field_id, document.getElementById(item.field_id).value);
                                             }

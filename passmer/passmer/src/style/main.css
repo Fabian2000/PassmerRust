@@ -666,10 +666,9 @@ input:focus {
 }
 .fields-layout .fields .fields-content .field-split {
   width: 95%;
-  background-color: transparent;
+  background-color: inherit;
   border-bottom: #292929 1px solid;
   margin-bottom: 10px;
-  z-index: 1;
 }
 .fields-layout .fields .fields-content .field-split .hide {
   display: none;
@@ -677,8 +676,8 @@ input:focus {
 .fields-layout .fields .fields-content .field-split .show {
   display: block;
 }
-.fields-layout .fields .fields-content .field-split svg {
-  opacity: 0.2;
+.fields-layout .fields .fields-content .field-split svg, .fields-layout .fields .fields-content .field-split path {
+  color: #313131 !important;
 }
 .fields-layout .fields .fields-content .field-actions {
   width: 200px;

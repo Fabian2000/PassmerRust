@@ -176,10 +176,9 @@
 
             .field-split {
                 width: 95%;
-                background-color: transparent;
+                background-color: inherit;
                 border-bottom: $primary-color-lighter 1px solid;
                 margin-bottom: $padding;
-                z-index: 1;
                 
                 .hide {
                     display: none;
@@ -189,8 +188,8 @@
                     display: block;
                 }
 
-                svg {
-                    opacity: 0.2;
+                svg, path {
+                    color: darken($secondary-color, 75%) !important;
                 }
             }
 
