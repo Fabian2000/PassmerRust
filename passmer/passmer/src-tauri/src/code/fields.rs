@@ -6,6 +6,8 @@ use crate::{
     },
 };
 
+use rand::Rng;
+
 #[tauri::command]
 pub fn get_fields(section_id: i64) -> Vec<Field> {
     let db_guard = GLOBAL_PASSMER_DB.lock().unwrap();
@@ -299,4 +301,71 @@ pub fn update_field_value(section_id: i64, field_id: i64, new_value: String) {
     }
 
     passmer::save_db();
+}
+
+#[tauri::command]
+pub fn secure_password_generator() -> String {
+    // minimum length of 40 characters
+    // at least 1 uppercase letter
+    // at least 1 lowercase letter
+    // at least 1 number
+    // at least 1 special character
+    // no spaces
+    // random cryptographically secure password
+
+    let mut password = String::new();
+
+    loop {
+        for _ in 0..40 {
+            password.push(generate_random_char());
+        }
+
+        if validate_generated_password(&password) {
+            break;
+        } else {
+            password.clear();
+        }
+    }
+
+    password
+}
+
+fn generate_random_char() -> char {
+    let mut rng = rand::thread_rng();
+    let random_char = match rng.gen_range(0..4) {
+        0 => rng.gen_range(48..58),  // 0-9
+        1 => rng.gen_range(65..91),  // A-Z
+        2 => rng.gen_range(97..123), // a-z
+        3 => match rng.gen_range(0..4) {
+            0 => rng.gen_range(33..48),   // !-/
+            1 => rng.gen_range(58..65),   // :-@
+            2 => rng.gen_range(91..97),   // [-`
+            3 => rng.gen_range(123..127), // {-~
+            _ => 32,                      // Leerzeichen als Default-Wert
+        },
+        _ => 32, // Leerzeichen als Default-Wert
+    };
+
+    std::char::from_u32(random_char).unwrap_or('0')
+}
+
+fn validate_generated_password(password: &str) -> bool {
+    let mut has_uppercase = false;
+    let mut has_lowercase = false;
+    let mut has_number = false;
+    let mut has_special = false;
+
+    for c in password.chars() {
+        if c.is_ascii_uppercase() {
+            has_uppercase = true;
+        } else if c.is_ascii_lowercase() {
+            has_lowercase = true;
+        } else if c.is_ascii_digit() {
+            has_number = true;
+        } else if c.is_ascii_punctuation() {
+            has_special = true;
+        }
+    }
+
+    has_uppercase && has_lowercase && has_number && has_special
 }

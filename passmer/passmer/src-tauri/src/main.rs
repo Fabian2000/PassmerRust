@@ -2,8 +2,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use clipboard::{ClipboardContext, ClipboardProvider};
+use enigo::*;
 use named_lock::NamedLock;
-use open;
 use rfd::{MessageDialog, MessageLevel};
 use std::process::exit;
 use tauri::Manager;
@@ -64,6 +64,8 @@ fn main() {
             code::fields::rename_field,
             clipboard_copy,
             code::fields::update_field_value,
+            remote_type_text,
+            code::fields::secure_password_generator,
         ])
         .run(tauri::generate_context!());
 
@@ -95,6 +97,21 @@ fn main() {
         if let Err(result) = ctx.set_contents(text) {
             println!("Error copying to clipboard: {:?}", result);
             msg_box("Error copying to clipboard".to_string(), "error");
+        }
+    }
+
+    #[tauri::command]
+    fn remote_type_text(text: String) {
+        let enigo = Enigo::new(&Settings::default());
+
+        if let Ok(mut enigo) = enigo {
+            if let Err(error) = enigo.text(&text) {
+                println!("Error typing text: {:?}", error);
+                msg_box("Error typing text".to_string(), "error");
+            }
+        } else {
+            println!("Error creating enigo");
+            msg_box("Error typing text".to_string(), "error");
         }
     }
 }

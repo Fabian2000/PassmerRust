@@ -24,6 +24,23 @@ input:focus-visible {
 input:focus {
   outline: none;
 }
+input::-moz-selection {
+  background-color: #161616 !important;
+  color: #ffffff;
+}
+input::selection {
+  background-color: #161616 !important;
+  color: #ffffff;
+}
+
+textarea::-moz-selection {
+  background-color: #161616 !important;
+  color: #ffffff;
+}
+textarea::selection {
+  background-color: #161616 !important;
+  color: #ffffff;
+}
 
 .login .logo {
   width: 100px;
@@ -39,14 +56,6 @@ input:focus {
   margin-bottom: 20px;
   background-color: #303030;
   box-shadow: inset 0 0 10px #000000;
-  color: #ffffff;
-}
-.login .password-input::-moz-selection {
-  background-color: #161616 !important;
-  color: #ffffff;
-}
-.login .password-input::selection {
-  background-color: #161616 !important;
   color: #ffffff;
 }
 
@@ -617,8 +626,8 @@ input:focus {
 }
 .fields-layout .fields .fields-content {
   padding: 10px;
-  height: calc(100dvh - 50px);
-  width: calc(100dvw - 300px);
+  height: calc(100dvh - (50px + 3 * 10px));
+  width: calc(100dvw - 300px - 2 * 10px);
   overflow-y: auto;
   overflow-x: hidden;
   border-left: 1px solid #292929;
@@ -628,6 +637,20 @@ input:focus {
   align-items: flex-start;
   align-content: flex-start;
   flex-wrap: wrap;
+}
+.fields-layout .fields .fields-content::-webkit-scrollbar {
+  width: 10px;
+}
+.fields-layout .fields .fields-content::-webkit-scrollbar-thumb {
+  background-color: #161616;
+  border-radius: 7px;
+}
+.fields-layout .fields .fields-content::-webkit-scrollbar-track {
+  background-color: #202020;
+  border-radius: 7px;
+}
+.fields-layout .fields .fields-content::-webkit-scrollbar-thumb:hover {
+  background-color: #292929;
 }
 .fields-layout .fields .fields-content .field-text {
   display: flex;
@@ -642,6 +665,9 @@ input:focus {
   border-radius: 7px;
   margin-right: 10px;
   margin-bottom: 10px;
+}
+.fields-layout .fields .fields-content .field-text:has(.textarea) {
+  height: 120px;
 }
 .fields-layout .fields .fields-content .field-text .hide {
   display: none;
@@ -663,6 +689,30 @@ input:focus {
   width: 200px;
   padding-left: 10px;
   background-color: #303030;
+}
+.fields-layout .fields .fields-content .field-text .field-input.textarea {
+  height: 100px;
+  width: calc(400px + 10px * 5);
+  resize: none;
+  font-family: "Arial", "Roboto", sans-serif;
+  border-radius: 7px;
+  margin-top: 10px;
+  padding: 10px;
+  outline: none;
+}
+.fields-layout .fields .fields-content .field-text .field-input.textarea::-webkit-scrollbar {
+  width: 10px;
+}
+.fields-layout .fields .fields-content .field-text .field-input.textarea::-webkit-scrollbar-thumb {
+  background-color: #161616;
+  border-radius: 7px;
+}
+.fields-layout .fields .fields-content .field-text .field-input.textarea::-webkit-scrollbar-track {
+  background-color: #202020;
+  border-radius: 7px;
+}
+.fields-layout .fields .fields-content .field-text .field-input.textarea::-webkit-scrollbar-thumb:hover {
+  background-color: #292929;
 }
 .fields-layout .fields .fields-content .field-split {
   width: 95%;

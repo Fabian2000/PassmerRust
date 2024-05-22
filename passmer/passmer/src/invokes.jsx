@@ -44,6 +44,10 @@ export const updateFieldValue = (sectionId, fieldId, value) => invoke('update_fi
 
 export const clipboardCopy = (text) => invoke('clipboard_copy', { "text": text });
 
+export const remoteTypeText = (text) => invoke('remote_type_text', { "text": text });
+
+export const securePasswordGenerator = () => invoke('secure_password_generator');
+
 export const msgBox = (message, level) => invoke('msg_box', { "text" : message, "level" : level });
 
 export const msgBoxLevel = Object.freeze({

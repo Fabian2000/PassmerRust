@@ -11,14 +11,17 @@ export function Main() {
   useEffect(() => {
 
     const preventCtrl = (e) => {
-      // Exclude Ctrl + V and Ctrl + C and Ctrl + A (in input fields)
+      // Exclude Ctrl + V and Ctrl + C/X and Ctrl + A (in input fields)
       if (e.ctrlKey && e.key === 'v') {
         return;
       }
       if (e.ctrlKey && e.key === 'c') {
         return;
       }
-      if ((e.ctrlKey && e.key === 'a') && e.target.nodeName === 'INPUT') {
+      if (e.ctrlKey && e.key === 'x') {
+        return;
+      }
+      if ((e.ctrlKey && e.key === 'a') && e.target.nodeName === 'INPUT' || e.target.nodeName === 'TEXTAREA') {
         return;
       }
       if (e.ctrlKey || e.metaKey) {

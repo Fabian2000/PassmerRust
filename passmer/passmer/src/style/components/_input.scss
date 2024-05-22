@@ -11,4 +11,26 @@ input {
     &:focus {
         outline: none;
     }
+
+    &::-moz-selection {
+        background-color: $primary-color!important;
+        color: $input-text-color;
+    }
+    
+    &::selection {
+        background-color: $primary-color!important;
+        color: $input-text-color;
+    }
+}
+
+textarea {
+    &::-moz-selection {
+        background-color: $primary-color!important;
+        color: $input-text-color;
+    }
+
+    &::selection {
+        background-color: $primary-color!important;
+        color: $input-text-color;
+    }
 }

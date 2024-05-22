@@ -15,15 +15,5 @@
         background-color: $input-color;
         box-shadow: $inset-shadow;
         color: $input-text-color;
-
-        &::-moz-selection {
-            background-color: $primary-color!important;
-            color: $input-text-color;
-        }
-
-        &::selection {
-            background-color: $primary-color!important;
-            color: $input-text-color;
-        }
     }
 }

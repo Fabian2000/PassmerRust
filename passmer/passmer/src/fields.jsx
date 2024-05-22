@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Sidebar from './sidebar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faPlus, faParagraph, faFont, faKey, faLeftLong, faRightLong, faGear, faTrash, faRightLeft, faPen, faEyeSlash, faCopy  } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faPlus, faParagraph, faFont, faKey, faLeftLong, faRightLong, faGear, faTrash, faRightLeft, faPen, faEyeSlash, faCopy, faKeyboard, faComment  } from '@fortawesome/free-solid-svg-icons';
 import * as Invokes from './invokes';
 
 export function Fields() {
@@ -26,7 +26,6 @@ export function Fields() {
         Invokes.getFields(parseInt(sectionId)).then((fields) => {
             fields.sort((a, b) => a.order_id - b.order_id);
             setFields(fields);
-            console.log(fields);
         });
     }
 
@@ -129,6 +128,15 @@ export function Fields() {
                             });
                         }}><FontAwesomeIcon icon={faKey} /> Password</button>
                         <button className="option" onClick={ () => {
+                            Invokes.addField(parseInt(sectionId), newFieldTitle, "", Invokes.fieldTypes.NOTES).then(() => {
+                                setNewFieldTitle("");
+                                setShowAddFieldPopup(false);
+                                setTimeout(() => {
+                                    reRenderFieldItems(sectionId);
+                                }, 1000);
+                            });
+                        }}><FontAwesomeIcon icon={faComment} /> Comment</button>
+                        <button className="option" onClick={ () => {
                             Invokes.addField(parseInt(sectionId), newFieldTitle, "", Invokes.fieldTypes.SPLIT).then(() => {
                                 setNewFieldTitle("");
                                 setShowAddFieldPopup(false);
@@ -197,13 +205,16 @@ export function Fields() {
                 <div className="fields-content">
                     {
                         fields.map((item) => {
-                            if (item.field_type == "Text") {
+                            if (item.field_type == Invokes.fieldTypes.TEXT) {
                                 return (
                                     <div className="field-text" key={item.field_id} onContextMenu={ () => setLastSelectedFieldId(item.field_id)}>
                                         <label className="field-label" htmlFor={item.field_id}><FontAwesomeIcon icon={faFont} /> {item.field_title}</label>
                                         <input className={`field-input ${(lastSelectedFieldId == item.field_id ? "hide" : "show")}`} id={item.field_id} type="text" name={'passmer' + random} autoComplete={'passmer' + random} onChange={
                                             () => {
+                                                // Save in database
                                                 Invokes.updateFieldValue(parseInt(sectionId), item.field_id, document.getElementById(item.field_id).value);
+                                                // Also save in local memory without re-rendering
+                                                fields.find((field) => field.field_id == item.field_id).field_value = document.getElementById(item.field_id).value;
                                             }
                                         } />
                                         { customInputLoad(item.field_id, item.field_value) }
@@ -213,17 +224,27 @@ export function Fields() {
                                             <button className="btn" title="Swap right" onClick={ () => swapFieldItemsRight(sectionId, item.field_id) }><FontAwesomeIcon icon={faRightLong} /></button>
                                             <button className="btn" title="Options" onClick={ () => { setShowOptionFieldPopup(true); setNewFieldTitle(item.field_title) } }><FontAwesomeIcon icon={faGear} /></button>
                                             <button className="btn" title="Delete" onClick={ () => setShowDeleteFieldPopup(true) }><FontAwesomeIcon icon={faTrash} /></button>
+                                            <button className="btn" title="Type text after 5 seconds automatically" onClick={ 
+                                                () => {
+                                                    setTimeout(() => {
+                                                        Invokes.remoteTypeText(document.getElementById(item.field_id).value);
+                                                    }, 5000);
+                                                }
+                                            }><FontAwesomeIcon icon={faKeyboard} /></button>
                                         </div>
                                     </div>
                                 );
                             }
-                            else if (item.field_type == "Password") {
+                            else if (item.field_type == Invokes.fieldTypes.PASSWORD) {
                                 return (
                                     <div className="field-text" key={item.field_id} onContextMenu={ () => setLastSelectedFieldId(item.field_id)}>
                                         <label className="field-label" htmlFor={item.field_id}><FontAwesomeIcon icon={faKey} /> {item.field_title}</label>
                                         <input className={`field-input ${(lastSelectedFieldId == item.field_id ? "hide" : "show")}`} id={item.field_id} type="password" name={'passmer' + random} autoComplete={'passmer' + random} onChange={
                                             () => {
+                                                // Save in database
                                                 Invokes.updateFieldValue(parseInt(sectionId), item.field_id, document.getElementById(item.field_id).value);
+                                                // Also save in local memory without re-rendering
+                                                fields.find((field) => field.field_id == item.field_id).field_value = document.getElementById(item.field_id).value;
                                             }
                                         } />
                                         { customInputLoad(item.field_id, item.field_value) }
@@ -242,11 +263,56 @@ export function Fields() {
                                                 setLastSelectedFieldId(-1);
                                             }
                                             }><FontAwesomeIcon icon={faCopy} /></button>
+                                            <button className="btn" title="Type text after 5 seconds automatically" onClick={ 
+                                                () => {
+                                                    setTimeout(() => {
+                                                        Invokes.remoteTypeText(document.getElementById(item.field_id).value);
+                                                    }, 5000);
+                                                }
+                                            }><FontAwesomeIcon icon={faKeyboard} /></button>
+                                            <button className="btn" title="Generate secure password" onClick={ () => {
+                                                Invokes.securePasswordGenerator().then((password) => {
+                                                    document.getElementById(item.field_id).value = password;
+                                                    Invokes.updateFieldValue(parseInt(sectionId), item.field_id, password);
+                                                    fields.find((field) => field.field_id == item.field_id).field_value = password;
+                                                    setLastSelectedFieldId(-1);
+                                                });
+                                            } }><FontAwesomeIcon icon={faKey} /></button>
                                         </div>
                                     </div>
                                 );
                             }
-                            else if (item.field_type == "Split") {
+                            else if (item.field_type == Invokes.fieldTypes.NOTES) {
+                                return (
+                                    <div className="field-text" key={item.field_id} onContextMenu={ () => setLastSelectedFieldId(item.field_id)}>
+                                        <label className="field-label" htmlFor={item.field_id}><FontAwesomeIcon icon={faComment} /> {item.field_title}</label>
+                                        <textarea className={`field-input textarea ${(lastSelectedFieldId == item.field_id ? "hide" : "show")}`} id={item.field_id} type="text" name={'passmer' + random} autoComplete={'passmer' + random} onChange={
+                                            () => {
+                                                // Save in database
+                                                Invokes.updateFieldValue(parseInt(sectionId), item.field_id, document.getElementById(item.field_id).value);
+                                                // Also save in local memory without re-rendering
+                                                fields.find((field) => field.field_id == item.field_id).field_value = document.getElementById(item.field_id).value;
+                                            }
+                                        }></textarea>
+                                        { customInputLoad(item.field_id, item.field_value) }
+                                        <div className={`field-actions ${(lastSelectedFieldId == item.field_id ? "show" : "hide")}`}>
+                                            <button className="btn" title="Close menu" onClick={ () => setLastSelectedFieldId(-1) }><FontAwesomeIcon icon={faRightLeft} /></button>
+                                            <button className="btn" title="Swap left" onClick={ () => swapFieldItemsLeft(sectionId, item.field_id) }><FontAwesomeIcon icon={faLeftLong} /></button>
+                                            <button className="btn" title="Swap right" onClick={ () => swapFieldItemsRight(sectionId, item.field_id) }><FontAwesomeIcon icon={faRightLong} /></button>
+                                            <button className="btn" title="Options" onClick={ () => { setShowOptionFieldPopup(true); setNewFieldTitle(item.field_title) } }><FontAwesomeIcon icon={faGear} /></button>
+                                            <button className="btn" title="Delete" onClick={ () => setShowDeleteFieldPopup(true) }><FontAwesomeIcon icon={faTrash} /></button>
+                                            <button className="btn" title="Type text after 5 seconds automatically" onClick={ 
+                                                () => {
+                                                    setTimeout(() => {
+                                                        Invokes.remoteTypeText(document.getElementById(item.field_id).value);
+                                                    }, 5000);
+                                                }
+                                            }><FontAwesomeIcon icon={faKeyboard} /></button>
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            else if (item.field_type == Invokes.fieldTypes.SPLIT) {
                                 return (
                                     <div className="field-split" id={item.field_id} key={item.field_id} onContextMenu={ () => setLastSelectedFieldId(item.field_id)}>
                                         <FontAwesomeIcon className={`${(lastSelectedFieldId == item.field_id ? "hide" : "show")}`} icon={faParagraph} />
