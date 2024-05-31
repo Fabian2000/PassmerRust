@@ -48,6 +48,12 @@ export const remoteTypeText = (text) => invoke('remote_type_text', { "text": tex
 
 export const securePasswordGenerator = () => invoke('secure_password_generator');
 
+export const checkUpdate = () => invoke('check_update');
+
+export const downloadUpdater = () => invoke('download_updater');
+
+export const startUpdater = () => invoke('start_updater');
+
 export const msgBox = (message, level) => invoke('msg_box', { "text" : message, "level" : level });
 
 export const msgBoxLevel = Object.freeze({

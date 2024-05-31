@@ -66,6 +66,9 @@ fn main() {
             code::fields::update_field_value,
             remote_type_text,
             code::fields::secure_password_generator,
+            code::update::check_update,
+            code::update::download_updater,
+            code::update::start_updater,
         ])
         .run(tauri::generate_context!());
 
