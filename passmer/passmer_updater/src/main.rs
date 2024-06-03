@@ -25,10 +25,26 @@ async fn main() {
 
     println!("Downloading Update...");
 
-    let url = "https://files.fabi-sc.de/main_website/projects/passmer/passmer.zip";
-    let output_path = Path::new("passmer.zip");
+    let current_system = std::env::consts::OS;
+    let current_system = match current_system {
+        //"macos" => "macos",
+        "windows" => "windows",
+        "linux" => "linux",
+        _ => {
+            eprintln!("Unsupported Operating System: {}", current_system);
+            return;
+        }
+    };
 
-    match download_update(url, output_path).await {
+    let zip_name = format!("passmer-{}.zip", current_system);
+
+    let url = format!(
+        "https://files.fabi-sc.de/main_website/projects/passmer/{}",
+        zip_name
+    );
+    let output_path = Path::new(&zip_name);
+
+    match download_update(&url, output_path).await {
         Ok(_) => println!("Update downloaded successfully!"),
         Err(e) => {
             eprintln!("Failed to download the update: {}", e);

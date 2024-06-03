@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::msg_box::msg_box;
+use super::{languages, msg_box::msg_box};
 
 #[tauri::command(async)]
 pub async fn check_update() -> Option<UpdateInfo> {
@@ -14,14 +14,24 @@ pub async fn check_update() -> Option<UpdateInfo> {
     {
         Ok(res) => res,
         Err(err) => {
-            msg_box(format!("Error checking for updates: {}", err), "error");
+            msg_box(
+                format!(
+                    "{}: {}",
+                    languages::get_translation("ERR_CHECK_UPDATES_MSG"),
+                    err
+                ),
+                "error",
+            );
             return None;
         }
     };
 
     // Check response status and handle errors
     if !response.status().is_success() {
-        msg_box("Server responded with an error".to_string(), "error");
+        msg_box(
+            languages::get_translation("SERVER_RESPOND_ERR_MSG"),
+            "error",
+        );
         return None;
     }
 
@@ -30,7 +40,11 @@ pub async fn check_update() -> Option<UpdateInfo> {
         Ok(bytes) => bytes,
         Err(err) => {
             msg_box(
-                format!("Error reading update information: {}", err),
+                format!(
+                    "{}: {}",
+                    languages::get_translation("ERR_READ_UPDATE_INFO_MSG"),
+                    err
+                ),
                 "error",
             );
             return None;
@@ -38,20 +52,46 @@ pub async fn check_update() -> Option<UpdateInfo> {
     };
 
     // Parse the JSON and handle errors
-    match serde_json::from_slice::<UpdateInfo>(&bytes) {
-        Ok(update_info) => Some(update_info),
+    let update_info = match serde_json::from_slice::<UpdateInfo>(&bytes) {
+        Ok(update_info) => update_info,
         Err(err) => {
             msg_box(
-                format!("Error parsing update information: {}", err),
+                format!(
+                    "{}: {}",
+                    languages::get_translation("ERR_PARSE_UPDATE_INFO_MSG"),
+                    err
+                ),
                 "error",
             );
-            None
+            return None;
         }
+    };
+
+    let current_version = env!("CARGO_PKG_VERSION");
+    let latest_version = update_info.latest_version.as_str();
+
+    if current_version == latest_version {
+        msg_box(
+            languages::get_translation("NO_UPDATE_AVAILABLE_MSG"),
+            "info",
+        );
+        None
+    } else {
+        Some(update_info)
     }
 }
 
 #[tauri::command(async)]
 pub async fn download_updater() {
+    // May not work on Linux
+    if cfg!(not(target_os = "windows")) {
+        msg_box(
+            languages::get_translation("ERR_UPDATE_NOT_SUPPORTED_MSG"),
+            "info",
+        );
+        return;
+    }
+
     let path_of_current_executable = std::env::current_exe().unwrap();
     let file_name = "passmer_updater.exe";
     let path_of_updater = path_of_current_executable.with_file_name(file_name);
@@ -65,14 +105,24 @@ pub async fn download_updater() {
     {
         Ok(res) => res,
         Err(err) => {
-            msg_box(format!("Error downloading updater: {}", err), "error");
+            msg_box(
+                format!(
+                    "{}: {}",
+                    languages::get_translation("ERR_DOWNLOAD_UPDATER_MSG"),
+                    err
+                ),
+                "error",
+            );
             return;
         }
     };
 
     // Check response status and handle errors
     if !response.status().is_success() {
-        msg_box("Server responded with an error".to_string(), "error");
+        msg_box(
+            languages::get_translation("SERVER_RESPOND_ERR_MSG"),
+            "error",
+        );
         return;
     }
 
@@ -80,7 +130,14 @@ pub async fn download_updater() {
     let bytes = match response.bytes().await {
         Ok(bytes) => bytes,
         Err(err) => {
-            msg_box(format!("Error reading updater: {}", err), "error");
+            msg_box(
+                format!(
+                    "{}: {}",
+                    languages::get_translation("ERR_READ_UPDATER_MSG"),
+                    err
+                ),
+                "error",
+            );
             return;
         }
     };
@@ -89,7 +146,14 @@ pub async fn download_updater() {
     match std::fs::write(path_of_updater, bytes) {
         Ok(_) => {}
         Err(err) => {
-            msg_box(format!("Error writing updater to disk: {}", err), "error");
+            msg_box(
+                format!(
+                    "{}: {}",
+                    languages::get_translation("ERR_WRITE_UPDATER_MSG"),
+                    err
+                ),
+                "error",
+            );
         }
     }
 }
@@ -100,6 +164,11 @@ fn close_app() {
 
 #[tauri::command]
 pub fn start_updater() {
+    // May not work on Linux
+    if cfg!(not(target_os = "windows")) {
+        return;
+    }
+
     let path_of_current_executable = std::env::current_exe().unwrap();
     let file_name = "passmer_updater.exe";
     let path_of_updater = path_of_current_executable.with_file_name(file_name);
@@ -108,7 +177,14 @@ pub fn start_updater() {
     match std::process::Command::new(path_of_updater).spawn() {
         Ok(_) => close_app(),
         Err(err) => {
-            msg_box(format!("Error starting updater: {}", err), "error");
+            msg_box(
+                format!(
+                    "{}: {}",
+                    languages::get_translation("ERR_START_UPDATER_MSG"),
+                    err
+                ),
+                "error",
+            );
         }
     }
 }

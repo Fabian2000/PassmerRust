@@ -3,7 +3,7 @@ use std::sync::{Arc, Mutex};
 use rfd::MessageDialog;
 use serde::{Deserialize, Serialize};
 
-use crate::database::db_file;
+use crate::{code::languages, database::db_file};
 
 use super::section::Section;
 
@@ -29,7 +29,7 @@ pub fn load_db(key: String) {
     let Ok(key) = db_file::as_key(&key).try_into() else {
         MessageDialog::new()
             .set_title("Error")
-            .set_description("Unable to convert password to key")
+            .set_description(languages::get_translation("UNABLE_CONV_KEY_MSG"))
             .show();
         return;
     };
@@ -41,7 +41,7 @@ pub fn load_db(key: String) {
     let Ok(db) = db_file::load(&db_file::default_filepath(), &key) else {
         MessageDialog::new()
             .set_title("Error")
-            .set_description("Unable to load database")
+            .set_description(languages::get_translation("UNABLE_LOAD_DB_MSG"))
             .show();
         return;
     };
@@ -62,7 +62,7 @@ pub fn save_db() {
     if db.is_none() {
         MessageDialog::new()
             .set_title("Error")
-            .set_description("No database found")
+            .set_description(languages::get_translation("NO_DB_MSG"))
             .show();
         return;
     }
@@ -70,7 +70,7 @@ pub fn save_db() {
     if key.is_none() {
         MessageDialog::new()
             .set_title("Error")
-            .set_description("No key found")
+            .set_description(languages::get_translation("NO_KEY_MSG"))
             .show();
         return;
     }
@@ -82,7 +82,7 @@ pub fn save_db() {
     ) else {
         MessageDialog::new()
             .set_title("Error")
-            .set_description("Unable to save database")
+            .set_description(languages::get_translation("UNABLE_SAVE_DB_MSG"))
             .show();
         return;
     };

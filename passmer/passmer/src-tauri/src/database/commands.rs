@@ -1,4 +1,4 @@
-use crate::code::msg_box;
+use crate::code::{languages, msg_box};
 
 use super::{
     passmer::{self, GLOBAL_PASSMER_DB},
@@ -10,7 +10,10 @@ pub fn add_new_section(section_name: String) {
     {
         if !is_valid_section_name(&section_name, false) {
             msg_box::msg_box(
-                "Section name must be between 2 and 28 characters long and contain only alphanumeric characters, spaces, and the following special characters: _ - . /".to_string(),
+                format!(
+                    "{} _ - . /",
+                    languages::get_translation("INVALID_SECTION_NAME_MSG")
+                ),
                 "error",
             );
             return;
@@ -35,7 +38,7 @@ pub fn add_new_section(section_name: String) {
                     .any(|section| section.section_title == section_name)
                 {
                     msg_box::msg_box(
-                        "Section with the same name already exists".to_string(),
+                        languages::get_translation("SECTION_ALREADY_EXISTS_MSG"),
                         "error",
                     );
                     return;
@@ -117,7 +120,10 @@ pub fn delete_section(section_id: i64) {
             Some(sections) => sections,
             None => {
                 println!("Sections not available");
-                msg_box::msg_box("Sections not available".to_string(), "error");
+                msg_box::msg_box(
+                    languages::get_translation("SECTIONS_NOT_AVAILABLE_MSG"),
+                    "error",
+                );
                 return;
             }
         };
@@ -144,7 +150,10 @@ pub fn rename_section(section_id: i64, new_name: String) {
     {
         if !is_valid_section_name(&new_name, false) {
             msg_box::msg_box(
-                "Section name must be between 2 and 28 characters long and contain only alphanumeric characters, spaces, and the following special characters: _ - . /".to_string(),
+                format!(
+                    "{} _ - . /",
+                    languages::get_translation("INVALID_SECTION_NAME_MSG")
+                ),
                 "error",
             );
             return;
@@ -161,7 +170,10 @@ pub fn rename_section(section_id: i64, new_name: String) {
             Some(sections) => sections,
             None => {
                 eprintln!("Sections not available");
-                msg_box::msg_box("Sections not available".to_string(), "error");
+                msg_box::msg_box(
+                    languages::get_translation("SECTIONS_NOT_AVAILABLE_MSG"),
+                    "error",
+                );
                 return;
             }
         };
@@ -176,7 +188,7 @@ pub fn rename_section(section_id: i64, new_name: String) {
             .any(|section| section.section_title == new_name)
         {
             msg_box::msg_box(
-                "Section with the same name already exists".to_string(),
+                languages::get_translation("SECTION_ALREADY_EXISTS_MSG"),
                 "error",
             );
             return;
@@ -197,7 +209,10 @@ pub fn duplicate_section(section_id: i64, duplication_name: String) {
     {
         if !is_valid_section_name(&duplication_name, false) {
             msg_box::msg_box(
-                "Section name must be between 2 and 28 characters long and contain only alphanumeric characters, spaces, and the following special characters: _ - . /".to_string(),
+                format!(
+                    "{} _ - . /",
+                    languages::get_translation("INVALID_SECTION_NAME_MSG")
+                ),
                 "error",
             );
             return;
@@ -214,7 +229,10 @@ pub fn duplicate_section(section_id: i64, duplication_name: String) {
             Some(sections) => sections,
             None => {
                 eprintln!("Sections not available");
-                msg_box::msg_box("Sections not available".to_string(), "error");
+                msg_box::msg_box(
+                    languages::get_translation("SECTIONS_NOT_AVAILABLE_MSG"),
+                    "error",
+                );
                 return;
             }
         };
@@ -229,7 +247,7 @@ pub fn duplicate_section(section_id: i64, duplication_name: String) {
             .any(|section| section.section_title == duplication_name)
         {
             msg_box::msg_box(
-                "Section with the same name already exists".to_string(),
+                languages::get_translation("SECTION_ALREADY_EXISTS_MSG"),
                 "error",
             );
             return;

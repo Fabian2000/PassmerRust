@@ -20,6 +20,8 @@ export const open = (link) => invoke('open', { "link": link });
 
 export const getSidebarData = (search) => invoke('get_sidebar_data', { "search": search});
 
+export const getSidebarTitleById = (sectionId) => invoke('get_sidebar_title_by_id', { "sectionId": sectionId });
+
 export const addNewSection = (title) => invoke('add_new_section', { "sectionName": title });
 
 export const deleteSection = (id) => invoke('delete_section', { "sectionId": id });

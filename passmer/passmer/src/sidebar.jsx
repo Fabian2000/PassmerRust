@@ -19,6 +19,9 @@ function Sidebar() {
   const [sidebarData, setSidebarData] = useState([]);
   const [lastSelectedSection, setLastSelectedSection] = useState(-1);
   const [lastSelectedSectionTitle, setLastSelectedSectionTitle] = useState('');
+  const [updateRunning, setUpdateRunning] = useState(false);
+  const [showChangelog, setShowChangelog] = useState(false);
+  const [changelogData, setChangelogData] = useState({});
 
   const { sectionId } = useParams();
   const navigate = useNavigate();
@@ -27,6 +30,9 @@ function Sidebar() {
   const renameSectionInputRef = useRef(null);
   const renameSectionAddButtonRef = useRef(null);
   const deleteSectionWrapperRef = useRef(null);
+  const updateBtn = useRef(null);
+  const changelogWrapperRef = useRef(null);
+  const updateBtn = useRef(null);
 
   useEffect(() => {
     Invokes.resizeWindowForMain();
@@ -96,6 +102,23 @@ function Sidebar() {
   useEffect(() => {
     reRenderSidebarItems(search);
   }, [search]);
+
+  useEffect(() => {
+    let selectedElement = document.querySelector(`[data-id='${sectionId}']`);
+    setTimeout(() => {
+      if (selectedElement) {
+        let buffer = 20;
+        let offset = selectedElement.offsetTop - selectedElement.offsetHeight - buffer; // - buffer to have some space above the selected element
+        document.querySelector('.sidebar-items').scrollTo({ top: offset, behavior: 'smooth' });
+      }
+    }, 0);
+  }, [sidebarData]);
+
+  useEffect(() => {
+    if (updateBtn.current) {
+      updateBtn.current.disabled = updateRunning;
+    }
+  }, [updateRunning]);
 
   const reRenderSidebarItems = (search) => {
     Invokes.getSidebarData(search).then((result) => {
@@ -180,7 +203,20 @@ function Sidebar() {
               </button>
             </div>
             <div className={`context-menu x-correction ${(showOptions ? "show" : "")}` }>
-              <button className="context-menu-btn" onClick={ () => Invokes.msgBox("This program is currently in early BETA testing. Some features, including the update check, are not yet available. For more information, please visit https://fabi-sc.de. The current version is 0.1.0.", Invokes.msgBoxLevel.INFO) }>Check for Update</button>
+              <button className="context-menu-btn" ref={updateBtn} onClick={ () => {
+                setUpdateRunning(true);
+                Invokes.checkUpdate().then((result) => {
+                  if (result) {
+                    setChangelogData(result);
+                    setShowChangelog(true);
+                    console.log(result);
+                    setUpdateRunning(false);
+                  }
+                  else {
+                    setUpdateRunning(false);
+                  }
+                });
+              } }>Check for Update</button>
               <button className="context-menu-btn" onClick={ () => Invokes.open("https://fabi-sc.de") }>Website</button>
             </div>
 
@@ -192,8 +228,8 @@ function Sidebar() {
             <div className="sidebar-items">
             {
               sidebarData.map((item) => (
-                <div className="sidebar-item" data-id={item.section_id} key={item.section_id} onClick={ () => navigate(`/fields/${item.section_id}`, { replace: true }) } onContextMenu={ (e) => { e.preventDefault(); setLastSelectedSection(item.section_id); setLastSelectedSectionTitle(item.section_title); showTheContextMenu(); ContextMenu.setContextMenuLocation(e) } }>
-                  <p className="item-title">{ sectionId == item.section_id ? <FontAwesomeIcon icon={faFilePen} /> : "" } {item.section_title}</p>
+                <div className={`sidebar-item ${sectionId == item.section_id ? "selected" : ""}`} data-id={item.section_id} key={item.section_id} onClick={ () => navigate(`/fields/${item.section_id}`, { replace: true }) } onContextMenu={ (e) => { e.preventDefault(); setLastSelectedSection(item.section_id); setLastSelectedSectionTitle(item.section_title); showTheContextMenu(); ContextMenu.setContextMenuLocation(e) } }>
+                  <p className="item-title">{item.section_title}</p>
                 </div>
               ))
             }
@@ -303,6 +339,43 @@ function Sidebar() {
               <button className="btn" onClick={ () => {
                 setShowDeleteSection(false);
               }}>Cancel</button>
+            </div>
+          </div>
+        </div>
+        
+        {
+        // Changelog Dialog
+        }
+        <div className={`changelog-wrapper ${(showChangelog ? "show" : "")}`} tabIndex={0} ref={changelogWrapperRef} onKeyDown={ (e) => {
+          // If escape key is pressed close the add section dialog
+          if (e.key == 'Escape') {
+            console.log('ESC pressed on delete section dialog');
+            setShowChangelog(false);
+          }
+        }}>
+          <div className="changelog">
+            <h2 className='title'>Update {changelogData.latest_version}</h2>
+            <div className='btn-collection'>
+              <button className="btn" onClick={ () => {
+                setShowChangelog(false);
+              }}>Update</button>
+              <button className="btn" onClick={ () => {
+                setShowChangelog(false);
+              }}>Cancel</button>
+            </div>
+            <h3 className='subtitle'>Changelog:</h3>
+            <div>
+              {changelogData.version && changelogData.version.length > 0 ? (
+                changelogData.version.map((item, index) => (
+                  <div className="changelog-data" key={index}>
+                    <h4>Version: {item.version}</h4>
+                    <b>Info:</b>
+                    <p>{item.changelog}</p>
+                  </div>
+                ))
+              ) : (
+                <p>Keine Changelog-Daten verfügbar</p> // Oder eine andere Fallback-Nachricht
+              )}
             </div>
           </div>
         </div>

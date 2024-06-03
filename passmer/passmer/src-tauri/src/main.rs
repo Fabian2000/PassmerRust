@@ -2,6 +2,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use clipboard::{ClipboardContext, ClipboardProvider};
+use code::languages;
 use enigo::*;
 use named_lock::NamedLock;
 use rfd::{MessageDialog, MessageLevel};
@@ -18,7 +19,7 @@ fn main() {
     let Ok(lock) = NamedLock::create("passmer_start_only_once_lock") else {
         MessageDialog::new()
             .set_title("Error")
-            .set_description("Could not create single instance lock")
+            .set_description(languages::get_translation("SINGLE_INSTANCE_LOCK_MSG"))
             .set_level(MessageLevel::Error)
             .show();
         exit(1);
@@ -27,7 +28,7 @@ fn main() {
     let Ok(_lock_guard) = lock.try_lock() else {
         MessageDialog::new()
             .set_title("Error")
-            .set_description("Another instance of Passmer is already running")
+            .set_description(languages::get_translation("ANOTHER_INSTANCE_RUNNING_MSG"))
             .set_level(MessageLevel::Error)
             .show();
         exit(1);
@@ -50,6 +51,7 @@ fn main() {
             database::passmer::save_db,
             database::passmer::db_exists,
             code::sidebar::get_sidebar_data,
+            code::sidebar::get_sidebar_title_by_id,
             code::login::logout,
             open,
             database::commands::add_new_section,
@@ -94,12 +96,18 @@ fn main() {
     fn clipboard_copy(text: String) {
         let Ok(mut ctx): Result<ClipboardContext, _> = ClipboardProvider::new() else {
             println!("Error creating clipboard context");
-            msg_box("Error copying to clipboard".to_string(), "error");
+            msg_box(
+                languages::get_translation("ERR_CLIPBOARD_COPY_MSG"),
+                "error",
+            );
             return;
         };
         if let Err(result) = ctx.set_contents(text) {
             println!("Error copying to clipboard: {:?}", result);
-            msg_box("Error copying to clipboard".to_string(), "error");
+            msg_box(
+                languages::get_translation("ERR_CLIPBOARD_COPY_MSG"),
+                "error",
+            );
         }
     }
 
@@ -110,11 +118,11 @@ fn main() {
         if let Ok(mut enigo) = enigo {
             if let Err(error) = enigo.text(&text) {
                 println!("Error typing text: {:?}", error);
-                msg_box("Error typing text".to_string(), "error");
+                msg_box(languages::get_translation("ERR_TYPING_TEXT_MSG"), "error");
             }
         } else {
             println!("Error creating enigo");
-            msg_box("Error typing text".to_string(), "error");
+            msg_box(languages::get_translation("ERR_TYPING_TEXT_MSG"), "error");
         }
     }
 }

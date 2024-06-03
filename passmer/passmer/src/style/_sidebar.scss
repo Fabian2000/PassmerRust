@@ -43,7 +43,6 @@
             grid-template-rows: 0fr;
             max-height: 1px;
             overflow: hidden;
-            padding-bottom: $margin;
             transition: all 0.5s ease-in-out;
 
             &.show {
@@ -61,7 +60,6 @@
             width: calc(100% - (2 * #{$padding}) * 3); /* With * 3, we can keep 0 auto for centering and use margin like this. */
             display: none;
             opacity: 0;
-            padding: $margin;
             animation: fade-out-search 0.5s ease-in-out forwards;
             overflow: hidden;
     
@@ -192,28 +190,29 @@
 
     .sidebar-item {
         background-color: inherit;
-        background: linear-gradient(90deg, $primary-color-lighter 0%, $bg-sidebar-color 1%, $bg-sidebar-color 100%);
         margin-left: $padding;
         margin-right: $padding;
-        margin-bottom: $margin;
-        padding: calc(#{$padding} / 2);
+        margin-bottom: $padding;
         border-radius: $radius;
-        border-left: $primary-color-lighter 5px solid;
+        border: transparent 5px solid;
         transition: all 0.25s ease-in-out;
         cursor: pointer;
 
         &:hover {
             background-color: $primary-color-lighter;
-            background: linear-gradient(90deg, $primary-color-lighter 0%, $bg-sidebar-color 75%, $bg-sidebar-color 100%);
-            border-left: $primary-color 6px solid;
-            padding-left: calc(#{$padding} / 2 - 1px);
+            border: darken($primary-color-lighter, .7) 5px solid;
         }
 
         &:active {
-            background-color: $primary-color-lighter;
-            background: linear-gradient(90deg, $primary-color-lighter 0%, $primary-color-lighter 75%, $primary-color-lighter 100%);
-            border-left: $primary-color 6px solid;
-            padding-left: calc(#{$padding} / 2 - 1px);
+            background-color: darken($primary-color-lighter, .7);
+        }
+
+        &.selected {
+            border-left: $secondary-color 5px solid;
+
+            &:hover {
+                border-left: transparent 5px solid;
+            }
         }
 
         .item-title {

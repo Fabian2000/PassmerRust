@@ -17,9 +17,14 @@ export function Fields() {
     const deleteFieldPopup = useRef(null);
     const [newFieldTitle, setNewFieldTitle] = useState("");
     const [lastSelectedFieldId, setLastSelectedFieldId] = useState(-1);
+    const [selectedSectionTitle, setSelectedSectionTitle] = useState("");
 
     useEffect(() => {
         reRenderFieldItems(sectionId);
+    }, [sectionId]);
+
+    useEffect(() => {
+        Invokes.getSidebarTitleById(parseInt(sectionId)).then((title) => setSelectedSectionTitle(title));
     }, [sectionId]);
 
     const reRenderFieldItems = (sectionId) => {
@@ -73,10 +78,13 @@ export function Fields() {
             </div>
             <div className="fields">
                 <div className="fields-header">
-                    <button className="btn animate-whoosh" onClick={ ()=> navigate("/sidebar", { "replace" : true }) }>
+                    <button className="btn animate-whoosh" title="Navigate back" onClick={ ()=> navigate("/sidebar", { "replace" : true }) }>
                         <FontAwesomeIcon icon={faArrowLeft} />
                     </button>
-                    <button className="btn animate-wiggle" onClick={
+                    <b className="title">
+                        {selectedSectionTitle}
+                    </b>
+                    <button className="btn animate-wiggle" title="New Field" onClick={
                         () => {
                             setShowAddFieldPopup(!showAddFieldPopup);
                             if (typeSelectionPopup.current) {

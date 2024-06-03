@@ -25,6 +25,13 @@
             border-bottom: 1px solid $primary-color-lighter;
             background-color: $bg-sidebar-color;
 
+            .title {
+                text-wrap: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: $padding;
+            }
+
             .btn {
                 background-color: $primary-color;
                 border-radius: $radius;
@@ -38,7 +45,7 @@
                 }
 
                 &.animate-whoosh svg {
-                    transform: translate(0, 0);
+                    /*transform: translate(0, 0);*/
                     transition: all 0.25s ease-in-out;
                 }
 
@@ -47,7 +54,7 @@
                 }
                 
                 &.animate-wiggle svg {
-                    transform: scale(1) translate(0, 0);
+                    /*transform: scale(1) translate(0, 0);*/
                     transition: all 0.25s ease-in-out;
                 }
 
@@ -121,7 +128,7 @@
         }
 
         .fields-content {
-            padding: $padding;
+            /*padding: $padding;*/
             height: calc(100dvh - (50px + 3 * #{$padding}));
             width: calc(100dvw - 300px - 2 * #{$padding});
             overflow-y: auto;

@@ -5,6 +5,7 @@
 @import 'sidebar';
 @import 'fields';
 @import 'components/contextmenu';
+@import 'changelog';
 
 html, body {
     margin: 0;
@@ -45,20 +46,25 @@ html {
     overflow: hidden;
 }
 
-/*.window-fade-enter { /* Entering starts */
-    /*filter: blur(0);
-}*/
+.window-fade-enter { /* Entering starts */
+    /*opacity: 0;
+    transform: scale(0.9);*/
+}
 
-/*.window-fade-enter-active { /* Entering ends */
-    /*filter: blur(5px);
-    transition: filter 300ms;
-}*/
+.window-fade-enter-active { /* Entering ends */
+    /*opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+    transition-delay: 300ms;*/
+}
 
-/*.window-fade-exit { /* Exiting starts */
-    /*filter: blur(0);
-}*/
+.window-fade-exit { /* Exiting starts */
+    /*opacity: 1;
+    transform: scale(1);*/
+}
 
-/*.window-fade-exit-active { /* Exiting ends */
-    /*filter: blur(5px);
-    transition: filter 300ms;
-}*/
+.window-fade-exit-active { /* Exiting ends */
+    /*opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;*/
+}

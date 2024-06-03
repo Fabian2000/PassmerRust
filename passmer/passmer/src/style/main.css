@@ -104,7 +104,6 @@ textarea::selection {
   grid-template-rows: 0fr;
   max-height: 1px;
   overflow: hidden;
-  padding-bottom: 20px;
   transition: all 0.5s ease-in-out;
 }
 .sidebar-second .sidebar-view .search-input-wrapper.show {
@@ -120,7 +119,6 @@ textarea::selection {
   width: calc(100% - 2 * 10px * 3); /* With * 3, we can keep 0 auto for centering and use margin like this. */
   display: none;
   opacity: 0;
-  padding: 20px;
   animation: fade-out-search 0.5s ease-in-out forwards;
   overflow: hidden;
 }
@@ -235,27 +233,26 @@ textarea::selection {
 }
 .sidebar-items .sidebar-item {
   background-color: inherit;
-  background: linear-gradient(90deg, #292929 0%, #202020 1%, #202020 100%);
   margin-left: 10px;
   margin-right: 10px;
-  margin-bottom: 20px;
-  padding: calc(10px / 2);
+  margin-bottom: 10px;
   border-radius: 7px;
-  border-left: #292929 5px solid;
+  border: transparent 5px solid;
   transition: all 0.25s ease-in-out;
   cursor: pointer;
 }
 .sidebar-items .sidebar-item:hover {
   background-color: #292929;
-  background: linear-gradient(90deg, #292929 0%, #202020 75%, #202020 100%);
-  border-left: #161616 6px solid;
-  padding-left: calc(10px / 2 - 1px);
+  border: #272727 5px solid;
 }
 .sidebar-items .sidebar-item:active {
-  background-color: #292929;
-  background: linear-gradient(90deg, #292929 0%, #292929 75%, #292929 100%);
-  border-left: #161616 6px solid;
-  padding-left: calc(10px / 2 - 1px);
+  background-color: #272727;
+}
+.sidebar-items .sidebar-item.selected {
+  border-left: #f0f0f0 5px solid;
+}
+.sidebar-items .sidebar-item.selected:hover {
+  border-left: transparent 5px solid;
 }
 .sidebar-items .sidebar-item .item-title {
   font-size: 16pt;
@@ -544,6 +541,12 @@ textarea::selection {
   border-bottom: 1px solid #292929;
   background-color: #202020;
 }
+.fields-layout .fields .fields-header .title {
+  text-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 10px;
+}
 .fields-layout .fields .fields-header .btn {
   background-color: #161616;
   border-radius: 7px;
@@ -556,14 +559,14 @@ textarea::selection {
   background-color: #292929;
 }
 .fields-layout .fields .fields-header .btn.animate-whoosh svg {
-  transform: translate(0, 0);
+  /*transform: translate(0, 0);*/
   transition: all 0.25s ease-in-out;
 }
 .fields-layout .fields .fields-header .btn.animate-whoosh:hover svg {
   animation: fields-whoosh 0.5s ease-in-out forwards;
 }
 .fields-layout .fields .fields-header .btn.animate-wiggle svg {
-  transform: scale(1) translate(0, 0);
+  /*transform: scale(1) translate(0, 0);*/
   transition: all 0.25s ease-in-out;
 }
 .fields-layout .fields .fields-header .btn.animate-wiggle:hover svg {
@@ -625,7 +628,7 @@ textarea::selection {
   animation: fields-slide-in 0.25s ease-in-out forwards;
 }
 .fields-layout .fields .fields-content {
-  padding: 10px;
+  /*padding: $padding;*/
   height: calc(100dvh - (50px + 3 * 10px));
   width: calc(100dvw - 300px - 2 * 10px);
   overflow-y: auto;
@@ -895,6 +898,111 @@ textarea::selection {
     opacity: 1;
   }
 }
+.changelog-wrapper {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  inset: 0;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  animation: changelog-fade-out 0.5s ease-in-out forwards;
+}
+.changelog-wrapper.show {
+  display: flex;
+  animation: changelog-fade-in 0.5s ease-in-out forwards;
+}
+.changelog-wrapper .changelog {
+  background-color: #161616;
+  border-radius: 7px;
+  border: 1px solid #f0f0f0;
+  padding: 10px;
+  width: 400px;
+  height: 90%;
+  overflow-y: auto;
+}
+.changelog-wrapper .changelog::-webkit-scrollbar {
+  width: 10px;
+}
+.changelog-wrapper .changelog::-webkit-scrollbar-thumb {
+  background-color: #161616;
+  border-radius: 7px;
+}
+.changelog-wrapper .changelog::-webkit-scrollbar-track {
+  background-color: #202020;
+  border-radius: 7px;
+}
+.changelog-wrapper .changelog::-webkit-scrollbar-thumb:hover {
+  background-color: #292929;
+}
+.changelog-wrapper .changelog .title, .changelog-wrapper .changelog .subtitle {
+  margin-bottom: 10px;
+}
+.changelog-wrapper .changelog .btn-collection {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 10px;
+}
+.changelog-wrapper .changelog .btn-collection .btn {
+  background-color: #292929;
+  margin-right: 10px;
+  transition: all 0.25s ease-in-out;
+}
+.changelog-wrapper .changelog .btn-collection .btn:nth-last-child(0) {
+  margin-right: 0;
+}
+.changelog-wrapper .changelog .btn-collection .btn:hover {
+  background-color: #202020;
+}
+.changelog-wrapper .changelog .changelog-data {
+  border-left: 1px solid #f0f0f0;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.changelog-wrapper .changelog .changelog-data:last-child {
+  margin-bottom: 0;
+}
+.changelog-wrapper .changelog .changelog-data h4, .changelog-wrapper .changelog .changelog-data p, .changelog-wrapper .changelog .changelog-data b {
+  margin: 0;
+  margin-bottom: 10px;
+}
+.changelog-wrapper .changelog .changelog-data p, .changelog-wrapper .changelog .changelog-data b {
+  font-size: 14pt;
+  margin: 10px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+@keyframes changelog-fade-in {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+  1% {
+    display: flex;
+    opacity: 0;
+  }
+  100% {
+    display: flex;
+    opacity: 1;
+  }
+}
+@keyframes changelog-fade-out {
+  0% {
+    display: flex;
+    opacity: 1;
+  }
+  99% {
+    display: flex;
+    opacity: 0;
+  }
+  100% {
+    display: none;
+    opacity: 0;
+  }
+}
 html, body {
   margin: 0;
   padding: 0;
@@ -934,17 +1042,25 @@ html {
   overflow: hidden;
 }
 
-/*.window-fade-enter { /* Entering starts */
-/*filter: blur(0);
-}*/
-/*.window-fade-enter-active { /* Entering ends */
-/*filter: blur(5px);
-    transition: filter 300ms;
-}*/
-/*.window-fade-exit { /* Exiting starts */
-/*filter: blur(0);
-}*/
-/*.window-fade-exit-active { /* Exiting ends */
-/*filter: blur(5px);
-    transition: filter 300ms;
-}*//*# sourceMappingURL=main.css.map */
+.window-fade-enter { /* Entering starts */
+  /*opacity: 0;
+  transform: scale(0.9);*/
+}
+
+.window-fade-enter-active { /* Entering ends */
+  /*opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
+  transition-delay: 300ms;*/
+}
+
+.window-fade-exit { /* Exiting starts */
+  /*opacity: 1;
+  transform: scale(1);*/
+}
+
+.window-fade-exit-active { /* Exiting ends */
+  /*opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;*/
+}/*# sourceMappingURL=main.css.map */

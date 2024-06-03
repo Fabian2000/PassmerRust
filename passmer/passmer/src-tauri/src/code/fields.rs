@@ -1,5 +1,5 @@
 use crate::{
-    code::msg_box::msg_box,
+    code::{languages, msg_box::msg_box},
     database::{
         field::{Field, FieldTypes},
         passmer::{self, GLOBAL_PASSMER_DB},
@@ -117,7 +117,8 @@ pub fn swap_order_ids(section_id: i64, field_id_1: i64, field_id_2: i64) {
 
         let Some(mut db) = (*db_guard).clone() else {
             println!("Database not available");
-            msg_box("Unable to get the database".to_string(), "error");
+            //msg_box("Unable to get the database".to_string(), "error");
+            msg_box(languages::get_translation("UNABLE_GET_DB_MSG"), "error");
             return;
         };
 
@@ -125,7 +126,10 @@ pub fn swap_order_ids(section_id: i64, field_id_1: i64, field_id_2: i64) {
             Some(sections) => sections,
             None => {
                 println!("Sections not available");
-                msg_box("Sections not available".to_string(), "error");
+                msg_box(
+                    languages::get_translation("SECTIONS_NOT_AVAILABLE_MSG"),
+                    "error",
+                );
                 return;
             }
         };
@@ -139,7 +143,11 @@ pub fn swap_order_ids(section_id: i64, field_id_1: i64, field_id_2: i64) {
                 Some(f) => f,
                 None => {
                     println!("Fields not available");
-                    msg_box("Fields not available".to_string(), "error");
+                    // msg_box("Fields not available".to_string(), "error");
+                    msg_box(
+                        languages::get_translation("FIELDS_NOT_AVAILABLE_MSG"),
+                        "error",
+                    );
                     return;
                 }
             };
@@ -166,7 +174,8 @@ pub fn delete_field(section_id: i64, field_id: i64) {
 
         let Some(mut db) = (*db_guard).clone() else {
             println!("Database not available");
-            msg_box("Unable to get the database".to_string(), "error");
+            //msg_box("Unable to get the database".to_string(), "error");
+            msg_box(languages::get_translation("UNABLE_GET_DB_MSG"), "error");
             return;
         };
 
@@ -174,7 +183,10 @@ pub fn delete_field(section_id: i64, field_id: i64) {
             Some(sections) => sections,
             None => {
                 println!("Sections not available");
-                msg_box("Sections not available".to_string(), "error");
+                msg_box(
+                    languages::get_translation("SECTIONS_NOT_AVAILABLE_MSG"),
+                    "error",
+                );
                 return;
             }
         };
@@ -188,7 +200,10 @@ pub fn delete_field(section_id: i64, field_id: i64) {
                 Some(f) => f,
                 None => {
                     println!("Fields not available");
-                    msg_box("Fields not available".to_string(), "error");
+                    msg_box(
+                        languages::get_translation("FIELDS_NOT_AVAILABLE_MSG"),
+                        "error",
+                    );
                     return;
                 }
             };
@@ -214,7 +229,7 @@ pub fn rename_field(section_id: i64, field_id: i64, new_title: String) {
 
         let Some(mut db) = (*db_guard).clone() else {
             println!("Database not available");
-            msg_box("Unable to get the database".to_string(), "error");
+            msg_box(languages::get_translation("UNABLE_GET_DB_MSG"), "error");
             return;
         };
 
@@ -222,7 +237,10 @@ pub fn rename_field(section_id: i64, field_id: i64, new_title: String) {
             Some(sections) => sections,
             None => {
                 println!("Sections not available");
-                msg_box("Sections not available".to_string(), "error");
+                msg_box(
+                    languages::get_translation("SECTIONS_NOT_AVAILABLE_MSG"),
+                    "error",
+                );
                 return;
             }
         };
@@ -236,7 +254,10 @@ pub fn rename_field(section_id: i64, field_id: i64, new_title: String) {
                 Some(f) => f,
                 None => {
                     println!("Fields not available");
-                    msg_box("Fields not available".to_string(), "error");
+                    msg_box(
+                        languages::get_translation("FIELDS_NOT_AVAILABLE_MSG"),
+                        "error",
+                    );
                     return;
                 }
             };
@@ -262,7 +283,7 @@ pub fn update_field_value(section_id: i64, field_id: i64, new_value: String) {
 
         let Some(mut db) = (*db_guard).clone() else {
             println!("Database not available");
-            msg_box("Unable to get the database".to_string(), "error");
+            msg_box(languages::get_translation("UNABLE_GET_DB_MSG"), "error");
             return;
         };
 
@@ -270,7 +291,10 @@ pub fn update_field_value(section_id: i64, field_id: i64, new_value: String) {
             Some(sections) => sections,
             None => {
                 println!("Sections not available");
-                msg_box("Sections not available".to_string(), "error");
+                msg_box(
+                    languages::get_translation("SECTIONS_NOT_AVAILABLE_MSG"),
+                    "error",
+                );
                 return;
             }
         };
@@ -284,7 +308,10 @@ pub fn update_field_value(section_id: i64, field_id: i64, new_value: String) {
                 Some(f) => f,
                 None => {
                     println!("Fields not available");
-                    msg_box("Fields not available".to_string(), "error");
+                    msg_box(
+                        languages::get_translation("FIELDS_NOT_AVAILABLE_MSG"),
+                        "error",
+                    );
                     return;
                 }
             };

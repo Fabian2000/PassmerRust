@@ -1,0 +1,121 @@
+.changelog-wrapper {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    inset: 0;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    animation: changelog-fade-out 0.5s ease-in-out forwards;
+
+    &.show {
+        display: flex;
+        animation: changelog-fade-in 0.5s ease-in-out forwards;
+    }
+
+    .changelog {
+        background-color: $primary-color;
+        border-radius: $radius;
+        border: 1px solid $secondary-color;
+        padding: $padding;
+        width: 400px;
+        height: 90%;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+    
+        &::-webkit-scrollbar-thumb {
+            background-color: $primary-color;
+            border-radius: $radius;
+        }
+    
+        &::-webkit-scrollbar-track {
+            background-color: $bg-sidebar-color;
+            border-radius: $radius;
+        }
+    
+        &::-webkit-scrollbar-thumb:hover {
+            background-color: $primary-color-lighter;
+        }
+
+        .title, .subtitle {
+            margin-bottom: $padding;
+        }
+
+        .btn-collection {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+            width: 100%;
+            margin-top: $padding;
+
+            .btn {
+                background-color: $primary-color-lighter;
+                margin-right: $padding;
+                transition: all 0.25s ease-in-out;
+                
+                &:nth-last-child(0) {
+                    margin-right: 0;
+                }
+
+                &:hover {
+                    background-color: $bg-sidebar-color;
+                }
+            }
+        }
+
+        .changelog-data {
+            border-left: 1px solid $secondary-color;
+            padding: $padding;
+            margin-bottom: $margin;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            h4, p, b {
+                margin: 0;
+                margin-bottom: $padding;
+            }
+
+            p, b {
+                font-size: calc($font-size - 2pt);
+                margin: $padding;
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
+@keyframes changelog-fade-in {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+    1% {
+        display: flex;
+        opacity: 0;
+    }
+    100% {
+        display: flex;
+        opacity: 1;
+    }
+}
+
+@keyframes changelog-fade-out {
+    0% {
+        display: flex;
+        opacity: 1;
+    }
+    99% {
+        display: flex;
+        opacity: 0;
+    }
+    100% {
+        display: none;
+        opacity: 0;
+    }
+}

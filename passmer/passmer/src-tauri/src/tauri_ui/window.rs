@@ -33,7 +33,7 @@ pub fn resize_window_for_main(window: tauri::Window) -> Result<(), String> {
     let (curr_x, curr_y) = get_window_position(&window)?;
     let (curr_width, curr_height) = get_window_size(&window)?;
 
-    if curr_width == MAIN_SIZE.0 && curr_height == MAIN_SIZE.1 {
+    if curr_width >= MAIN_SIZE.0 && curr_height >= MAIN_SIZE.1 {
         return Ok(());
     }
 

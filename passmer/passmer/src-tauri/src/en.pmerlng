@@ -1,0 +1,26 @@
+<LANG_NAME>                     :: <English>
+<SINGLE_INSTANCE_LOCK_MSG>      :: <Could not create single instance lock>
+<ANOTHER_INSTANCE_RUNNING_MSG>  :: <Another instance of Passmer is already running>
+<ERR_CLIPBOARD_COPY_MSG>        :: <Error copying to clipboard>
+<ERR_TYPING_TEXT_MSG>           :: <Error typing text>
+<UNABLE_CONV_KEY_MSG>           :: <Unable to convert password to key>
+<UNABLE_LOAD_DB_MSG>            :: <Unable to load database>
+<NO_DB_MSG>                     :: <No database found>
+<NO_KEY_MSG>                    :: <No key found>
+<UNABLE_SAVE_DB_MSG>            :: <Unable to save database>
+<UNABLE_GET_DB_MSG>             :: <Unable to get the database>
+<INVALID_SECTION_NAME_MSG>      :: <Section name must be between 2 and 28 characters long and contain only alphanumeric characters, spaces, and the following special characters:>
+<SECTION_ALREADY_EXISTS_MSG>    :: <Section with the same name already exists>
+<SECTIONS_NOT_AVAILABLE_MSG>    :: <Sections not available>
+<FIELDS_NOT_AVAILABLE_MSG>      :: <Fields not available>
+<ERR_CHECK_UPDATES_MSG>         :: <Error checking for updates>
+<SERVER_RESPOND_ERR_MSG>        :: <Server responded with an error>
+<ERR_READ_UPDATE_INFO_MSG>      :: <Error reading update information>
+<ERR_PARSE_UPDATE_INFO_MSG>     :: <Error parsing update information>
+<NO_UPDATE_AVAILABLE_MSG>       :: <You are already using the latest version>
+<ERR_UPDATE_NOT_SUPPORTED_MSG>  :: <This feature is currently only available on Windows. Please visit the website to download the latest version.>
+<ERR_DOWNLOAD_UPDATER_MSG>      :: <Error while downloading updater>
+<ERR_READ_UPDATER_MSG>          :: <Error reading updater>
+<ERR_WRITE_UPDATER_MSG>         :: <Error writing updater to disk>
+<ERR_START_UPDATER_MSG>         :: <Error starting updater>
+<> :: <>
