@@ -32,7 +32,8 @@ function Sidebar() {
   const deleteSectionWrapperRef = useRef(null);
   const updateBtn = useRef(null);
   const changelogWrapperRef = useRef(null);
-  const updateBtn = useRef(null);
+  const changelogUpdateBtn = useRef(null);
+  const changelogCancelBtn = useRef(null);
 
   useEffect(() => {
     Invokes.resizeWindowForMain();
@@ -356,11 +357,34 @@ function Sidebar() {
           <div className="changelog">
             <h2 className='title'>Update {changelogData.latest_version}</h2>
             <div className='btn-collection'>
-              <button className="btn" onClick={ () => {
-                setShowChangelog(false);
+              <button className="btn" ref={changelogUpdateBtn} onClick={ () => {
+                if (changelogUpdateBtn.current && changelogCancelBtn.current) {
+                  changelogUpdateBtn.current.disabled = true;
+                  changelogCancelBtn.current.disabled = true;
+                }
+
+                Invokes.downloadUpdater().then((result) => {
+                  if (result) {
+                    if (changelogUpdateBtn.current && changelogCancelBtn.current) {
+                      changelogCancelBtn.current.disabled = false;
+                    }
+                    Invokes.startUpdater();
+                  }
+                  else {
+                    Invokes.msgBox("Download failed", Invokes.msgBoxLevel.ERROR);
+                    if (changelogUpdateBtn.current && changelogCancelBtn.current) {
+                      changelogUpdateBtn.current.disabled = false;
+                      changelogCancelBtn.current.disabled = false;
+                    }
+                  }
+                });
               }}>Update</button>
-              <button className="btn" onClick={ () => {
+              <button className="btn" ref={changelogCancelBtn} onClick={ () => {
                 setShowChangelog(false);
+                if (changelogUpdateBtn.current && changelogCancelBtn.current) {
+                  changelogUpdateBtn.current.disabled = false;
+                  changelogCancelBtn.current.disabled = false;
+                }
               }}>Cancel</button>
             </div>
             <h3 className='subtitle'>Changelog:</h3>
