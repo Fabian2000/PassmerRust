@@ -13,24 +13,24 @@ input {
     }
 
     &::-moz-selection {
-        background-color: $primary-color!important;
-        color: $input-text-color;
+        background-color: $input-text-color!important;
+        color: $primary-color;
     }
     
     &::selection {
-        background-color: $primary-color!important;
-        color: $input-text-color;
+        background-color: $input-text-color!important;
+        color: $primary-color;
     }
 }
 
 textarea {
     &::-moz-selection {
-        background-color: $primary-color!important;
-        color: $input-text-color;
+        background-color: $input-text-color!important;
+        color: $primary-color;
     }
 
     &::selection {
-        background-color: $primary-color!important;
-        color: $input-text-color;
+        background-color: $input-text-color!important;
+        color: $primary-color;
     }
 }

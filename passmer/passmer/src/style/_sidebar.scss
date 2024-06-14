@@ -44,6 +44,8 @@
             max-height: 1px;
             overflow: hidden;
             transition: all 0.5s ease-in-out;
+            grid-template-columns: 1fr auto;
+            align-items: center;
 
             &.show {
                 grid-template-rows: 1fr;
@@ -63,7 +65,7 @@
             animation: fade-out-search 0.5s ease-in-out forwards;
             overflow: hidden;
     
-            &::-moz-selection {
+            /*&::-moz-selection {
                 background-color: $primary-color!important;
                 color: $input-text-color;
             }
@@ -71,12 +73,34 @@
             &::selection {
                 background-color: $primary-color!important;
                 color: $input-text-color;
-            }
+            }*/
 
             &.show {
                 display: block;
                 opacity: 1;
                 animation: fade-in-search 0.5s ease-in-out forwards;
+            }
+        }
+
+        .smart-search-btn {
+            background-color: $primary-color;
+            margin: 0 auto;
+            margin-bottom: $margin;
+            margin-right: $margin;
+            animation: fade-out-search 0.5s ease-in-out forwards;
+            overflow: hidden;
+            opacity: 0;
+            border: solid 2px transparent;
+            display: none;
+
+            &.show {
+                display: block;
+                opacity: 1;
+                animation: fade-in-search 0.5s ease-in-out forwards;
+            }
+
+            &.activated {
+                border: 2px solid #2a5e3e;
             }
         }
     }

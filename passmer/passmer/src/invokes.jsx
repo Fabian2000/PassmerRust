@@ -18,7 +18,7 @@ export const logout = () => invoke('logout');
 
 export const open = (link) => invoke('open', { "link": link });
 
-export const getSidebarData = (search) => invoke('get_sidebar_data', { "search": search});
+export const getSidebarData = (search, smartSearch) => invoke('get_sidebar_data', { "search": search, "smartSearch": smartSearch });
 
 export const getSidebarTitleById = (sectionId) => invoke('get_sidebar_title_by_id', { "sectionId": sectionId });
 

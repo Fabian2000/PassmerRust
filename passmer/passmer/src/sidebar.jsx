@@ -4,7 +4,7 @@ import './style/main.css';
 import * as Invokes from './invokes';
 import * as ContextMenu from './contextmenu';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faPlus, faGear, faArrowRightFromBracket, faEllipsisVertical, faFilePen } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faPlus, faGear, faArrowRightFromBracket, faEllipsisVertical, faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar() {
   const [search, setSearch] = useState('');
@@ -22,6 +22,7 @@ function Sidebar() {
   const [updateRunning, setUpdateRunning] = useState(false);
   const [showChangelog, setShowChangelog] = useState(false);
   const [changelogData, setChangelogData] = useState({});
+  const [smartFilterEnabled, setSmartFilterEnabled] = useState(false);
 
   const { sectionId } = useParams();
   const navigate = useNavigate();
@@ -102,7 +103,7 @@ function Sidebar() {
 
   useEffect(() => {
     reRenderSidebarItems(search);
-  }, [search]);
+  }, [search, smartFilterEnabled]);
 
   useEffect(() => {
     let selectedElement = document.querySelector(`[data-id='${sectionId}']`);
@@ -122,7 +123,7 @@ function Sidebar() {
   }, [updateRunning]);
 
   const reRenderSidebarItems = (search) => {
-    Invokes.getSidebarData(search).then((result) => {
+    Invokes.getSidebarData(search, smartFilterEnabled).then((result) => {
       setSidebarData(result);
     });
   }
@@ -223,6 +224,11 @@ function Sidebar() {
 
             <div className={`search-input-wrapper ${(showSearchInput ? "show" : "")}`}>
               <input className={`search-input ${(showSearchInput ? "show" : "")}`} type="text" placeholder="Search" value={search} onChange={bindSearchValue} autoComplete={'passmer' + random} />
+              <button className={`btn smart-search-btn ${(showSearchInput ? "show" : "")} ${(smartFilterEnabled ? "activated" : "")}`} title={`Smart filter ${(smartFilterEnabled ? "ON" : "OFF")}`} onClick={ () => { 
+                setSmartFilterEnabled(!smartFilterEnabled);
+              } }>
+                <FontAwesomeIcon icon={faWandMagicSparkles} />
+              </button>
             </div>
 
             {/* ITEM VIEW START */}

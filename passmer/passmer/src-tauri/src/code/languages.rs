@@ -7,6 +7,7 @@ use std::{collections::HashMap, io::BufReader};
 use super::msg_box::msg_box;
 
 pub fn get_languages() -> HashMap<String, String> {
+    println!("Getting languages");
     let mut languages = HashMap::new();
 
     let mut executable_path = std::env::current_exe().unwrap();
@@ -52,7 +53,7 @@ pub fn get_languages() -> HashMap<String, String> {
             languages.insert(language_key.to_string(), language_val.to_string());
         }
     }
-
+    println!("Got them!");
     languages
 }
 

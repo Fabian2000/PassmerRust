@@ -128,7 +128,7 @@
         }
 
         .fields-content {
-            /*padding: $padding;*/
+            padding: $padding;
             height: calc(100dvh - (50px + 3 * #{$padding}));
             width: calc(100dvw - 300px - 2 * #{$padding});
             overflow-y: auto;

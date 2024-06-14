@@ -25,21 +25,21 @@ input:focus {
   outline: none;
 }
 input::-moz-selection {
-  background-color: #161616 !important;
-  color: #ffffff;
+  background-color: #ffffff !important;
+  color: #161616;
 }
 input::selection {
-  background-color: #161616 !important;
-  color: #ffffff;
+  background-color: #ffffff !important;
+  color: #161616;
 }
 
 textarea::-moz-selection {
-  background-color: #161616 !important;
-  color: #ffffff;
+  background-color: #ffffff !important;
+  color: #161616;
 }
 textarea::selection {
-  background-color: #161616 !important;
-  color: #ffffff;
+  background-color: #ffffff !important;
+  color: #161616;
 }
 
 .login .logo {
@@ -105,6 +105,8 @@ textarea::selection {
   max-height: 1px;
   overflow: hidden;
   transition: all 0.5s ease-in-out;
+  grid-template-columns: 1fr auto;
+  align-items: center;
 }
 .sidebar-second .sidebar-view .search-input-wrapper.show {
   grid-template-rows: 1fr;
@@ -121,19 +123,39 @@ textarea::selection {
   opacity: 0;
   animation: fade-out-search 0.5s ease-in-out forwards;
   overflow: hidden;
-}
-.sidebar-second .sidebar-view .search-input::-moz-selection {
-  background-color: #161616 !important;
-  color: #ffffff;
-}
-.sidebar-second .sidebar-view .search-input::selection {
-  background-color: #161616 !important;
-  color: #ffffff;
+  /*&::-moz-selection {
+      background-color: $primary-color!important;
+      color: $input-text-color;
+  }
+
+  &::selection {
+      background-color: $primary-color!important;
+      color: $input-text-color;
+  }*/
 }
 .sidebar-second .sidebar-view .search-input.show {
   display: block;
   opacity: 1;
   animation: fade-in-search 0.5s ease-in-out forwards;
+}
+.sidebar-second .sidebar-view .smart-search-btn {
+  background-color: #161616;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  animation: fade-out-search 0.5s ease-in-out forwards;
+  overflow: hidden;
+  opacity: 0;
+  border: solid 2px transparent;
+  display: none;
+}
+.sidebar-second .sidebar-view .smart-search-btn.show {
+  display: block;
+  opacity: 1;
+  animation: fade-in-search 0.5s ease-in-out forwards;
+}
+.sidebar-second .sidebar-view .smart-search-btn.activated {
+  border: 2px solid #2a5e3e;
 }
 @container (max-width: 250px) {
   .sidebar-second .sidebar-view {
@@ -628,7 +650,7 @@ textarea::selection {
   animation: fields-slide-in 0.25s ease-in-out forwards;
 }
 .fields-layout .fields .fields-content {
-  /*padding: $padding;*/
+  padding: 10px;
   height: calc(100dvh - (50px + 3 * 10px));
   width: calc(100dvw - 300px - 2 * 10px);
   overflow-y: auto;
