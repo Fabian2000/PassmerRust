@@ -1,8 +1,8 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use clipboard::{ClipboardContext, ClipboardProvider};
 use code::languages;
+use copypasta::{ClipboardContext, ClipboardProvider};
 use enigo::*;
 use named_lock::NamedLock;
 use rfd::{MessageDialog, MessageLevel};
@@ -94,7 +94,7 @@ fn main() {
 
     #[tauri::command]
     fn clipboard_copy(text: String) {
-        let Ok(mut ctx): Result<ClipboardContext, _> = ClipboardProvider::new() else {
+        let Ok(mut ctx): Result<ClipboardContext, _> = ClipboardContext::new() else {
             println!("Error creating clipboard context");
             msg_box(
                 languages::get_translation("ERR_CLIPBOARD_COPY_MSG"),
