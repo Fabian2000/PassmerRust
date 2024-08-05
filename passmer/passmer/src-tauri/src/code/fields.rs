@@ -11,7 +11,7 @@ use rand::Rng;
 #[tauri::command]
 pub fn get_fields(section_id: i64) -> Vec<Field> {
     let db_guard = GLOBAL_PASSMER_DB.lock().unwrap();
-    println!("After Mutex");
+    //println!("After Mutex");
 
     let Some(db) = db_guard.as_ref() else {
         println!("Database not available");
@@ -23,7 +23,7 @@ pub fn get_fields(section_id: i64) -> Vec<Field> {
         return vec![];
     };
 
-    println!("Finding section: {}", section_id);
+    //println!("Finding section: {}", section_id);
     let found_section = sections.iter().find(|s| s.section_id == section_id);
 
     if let Some(section) = found_section {
@@ -44,7 +44,7 @@ pub fn add_field(section_id: i64, field_title: String, field_value: String, fiel
         println!("Adding field: {}", field_title);
 
         let mut db_guard = GLOBAL_PASSMER_DB.lock().unwrap();
-        println!("After Mutex");
+        //println!("After Mutex");
 
         let Some(mut db) = (*db_guard).clone() else {
             println!("Database not available");

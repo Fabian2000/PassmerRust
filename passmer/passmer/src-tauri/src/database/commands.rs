@@ -71,7 +71,7 @@ pub fn add_new_section(section_name: String) {
 
         *db_guard = Some(db);
 
-        println!("Saving DB now");
+        //println!("Saving DB now");
     }
     passmer::save_db();
 }

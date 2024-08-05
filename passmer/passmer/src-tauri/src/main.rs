@@ -115,13 +115,14 @@ fn main() {
     fn remote_type_text(text: String) {
         let enigo = Enigo::new(&Settings::default());
 
-        if let Ok(mut enigo) = enigo {
-            if let Err(error) = enigo.text(&text) {
-                println!("Error typing text: {:?}", error);
-                msg_box(languages::get_translation("ERR_TYPING_TEXT_MSG"), "error");
-            }
-        } else {
+        let Ok(mut enigo) = enigo else {
             println!("Error creating enigo");
+            msg_box(languages::get_translation("ERR_TYPING_TEXT_MSG"), "error");
+            return;
+        };
+
+        if enigo.text(&text).is_err() {
+            println!("Error typing text");
             msg_box(languages::get_translation("ERR_TYPING_TEXT_MSG"), "error");
         }
     }
