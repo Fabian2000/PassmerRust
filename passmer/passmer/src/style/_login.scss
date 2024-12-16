@@ -1,11 +1,29 @@
 .login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+
     .logo {
         width: 100px;
         height: 100px;
         margin: 0 auto;
         display: block;
         margin-top: $margin;
-        margin-bottom: $margin;        
+        margin-bottom: $margin;
+        border: solid 10px $bg-sidebar-color;
+        background-color: $bg-sidebar-color;
+        border-radius: 30%;
+        transform: translateY(-25%);
+    }
+
+    .box {
+        width: 500px;
+        max-height: 150px;
+        border-radius: $radius;
+        background-color: $bg-sidebar-color;
+        display: flex;
+        flex-direction: column;
     }
 
     .password-input {
@@ -13,7 +31,8 @@
         display: block;
         margin-bottom: $margin;
         background-color: $input-color;
-        box-shadow: $inset-shadow;
         color: $input-text-color;
+        transform: translateY(-100%);
+        text-align: center;
     }
 }

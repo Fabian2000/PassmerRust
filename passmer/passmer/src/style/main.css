@@ -42,6 +42,12 @@ textarea::selection {
   color: #161616;
 }
 
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+}
 .login .logo {
   width: 100px;
   height: 100px;
@@ -49,14 +55,27 @@ textarea::selection {
   display: block;
   margin-top: 20px;
   margin-bottom: 20px;
+  border: solid 10px #202020;
+  background-color: #202020;
+  border-radius: 30%;
+  transform: translateY(-25%);
+}
+.login .box {
+  width: 500px;
+  max-height: 150px;
+  border-radius: 7px;
+  background-color: #202020;
+  display: flex;
+  flex-direction: column;
 }
 .login .password-input {
   margin: 0 auto;
   display: block;
   margin-bottom: 20px;
   background-color: #303030;
-  box-shadow: inset 0 0 10px #000000;
   color: #ffffff;
+  transform: translateY(-100%);
+  text-align: center;
 }
 
 .sidebar {
@@ -1034,9 +1053,11 @@ html, body {
 
 html {
   background-color: #1b1b1b;
-  background-image: url("../assets/icon_pattern.webp");
-  background-size: 100px;
+  background-image: url("../assets/background_login.webp");
+  /*background-size: 100px;*/
   background-blend-mode: multiply;
+  background-position: center center;
+  background-size: cover;
 }
 
 * {

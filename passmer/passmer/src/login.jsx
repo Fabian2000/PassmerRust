@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import passmerLogo from './assets/icon.webp';
+import passmerLogo from './assets/PassmerLock.webp';
 import './style/main.css';
 import * as Invokes from './invokes';
 
@@ -52,8 +52,10 @@ function Login() {
     <>
       <div>
         <div className="login">
-          <img className="login logo" src={passmerLogo} alt="Passmer Logo" />
-          <input className="login password-input" type="password" placeholder="Pin or Password" value={password} onChange={bindPasswordValue} onKeyDown={ValidateKeyPressed} autoComplete={'passmer' + random} onBlur={reFocus} autoFocus />
+          <div className="login box">
+            <img className="login logo" src={passmerLogo} alt="Passmer Logo" />
+            <input className="login password-input" type="password" placeholder="Pin or Password" value={password} onChange={bindPasswordValue} onKeyDown={ValidateKeyPressed} autoComplete={'passmer' + random} onBlur={reFocus} autoFocus />
+          </div>
         </div>
       </div>
     </>

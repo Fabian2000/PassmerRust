@@ -64,6 +64,7 @@ pub fn add_new_section(section_name: String) {
             section_id: highest_id + 1,
             section_title: section_name,
             fields: None,
+            tags: None,
         };
 
         section_vectors.push(new_section);
@@ -268,6 +269,7 @@ pub fn duplicate_section(section_id: i64, duplication_name: String) {
                 section_id: highest_id + 1,
                 section_title: duplication_name,
                 fields: section_to_duplicate.fields,
+                tags: section_to_duplicate.tags,
             };
 
             section_vectors.push(new_section);

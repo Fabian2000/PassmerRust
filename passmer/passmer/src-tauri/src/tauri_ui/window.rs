@@ -1,16 +1,17 @@
 use tauri::{PhysicalPosition, PhysicalSize, Position, Size};
 
-const LOGIN_SIZE: (i32, i32) = (250, 200);
-const MAIN_SIZE: (i32, i32) = (850, 600);
+//const LOGIN_SIZE: (i32, i32) = (250, 200); old
+const LOGIN_SIZE: (i32, i32) = (850, 600);
+//const MAIN_SIZE: (i32, i32) = (850, 600);
 
 #[tauri::command]
 pub fn resize_window_for_login(window: tauri::Window) -> Result<(), String> {
     let (curr_x, curr_y) = get_window_position(&window)?;
     let (curr_width, curr_height) = get_window_size(&window)?;
 
-    if curr_width == LOGIN_SIZE.0 && curr_height == LOGIN_SIZE.1 {
+    /*if curr_width == LOGIN_SIZE.0 && curr_height == LOGIN_SIZE.1 {
         return Ok(());
-    }
+    }*/
 
     let (new_width, new_height) = LOGIN_SIZE;
     let (new_x, new_y) = calculate_new_position(
@@ -25,12 +26,17 @@ pub fn resize_window_for_login(window: tauri::Window) -> Result<(), String> {
     let Ok(_) = window.set_resizable(false) else {
         return Err("Failed to set window resizable".to_string());
     };
-    set_window_size_and_position(&window, new_x, new_y, new_width, new_height)
+
+    if (curr_width != new_width) || (curr_height != new_height) {
+        set_window_size_and_position(&window, new_x, new_y, new_width, new_height)
+    } else {
+        Ok(())
+    }
 }
 
 #[tauri::command]
 pub fn resize_window_for_main(window: tauri::Window) -> Result<(), String> {
-    let (curr_x, curr_y) = get_window_position(&window)?;
+    /*let (curr_x, curr_y) = get_window_position(&window)?;
     let (curr_width, curr_height) = get_window_size(&window)?;
 
     if curr_width >= MAIN_SIZE.0 && curr_height >= MAIN_SIZE.1 {
@@ -45,12 +51,13 @@ pub fn resize_window_for_main(window: tauri::Window) -> Result<(), String> {
         curr_height,
         new_width,
         new_height,
-    );
+    );*/
 
     let Ok(_) = window.set_resizable(true) else {
         return Err("Failed to set window resizable".to_string());
     };
-    set_window_size_and_position(&window, new_x, new_y, new_width, new_height)
+    //set_window_size_and_position(&window, new_x, new_y, new_width, new_height)
+    Ok(())
 }
 
 #[tauri::command]

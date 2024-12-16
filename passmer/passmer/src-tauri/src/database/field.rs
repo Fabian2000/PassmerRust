@@ -26,6 +26,8 @@ impl Drop for Field {
         // Optional: refill the capacity with null bytes (not necessary)
         self.field_value.reserve_exact(capacity - len);
         self.field_value.clear();
+        //let date_time = chrono::Local::now();
+        //println!("Logout: {}", date_time);
     }
 }
 

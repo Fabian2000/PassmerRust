@@ -1,7 +1,7 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use code::languages;
+use code::{languages, login};
 use copypasta::{ClipboardContext, ClipboardProvider};
 use enigo::*;
 use named_lock::NamedLock;
@@ -39,6 +39,19 @@ fn main() {
             let window = app.get_window("main").ok_or("Window not found")?;
             tauri_ui::window::resize_window_for_login(window.clone())?;
             Ok(())
+        })
+        .on_window_event(|event| match &event.event() {
+            tauri::WindowEvent::CloseRequested { api, .. } => {
+                api.prevent_close();
+                login::force_logout();
+                println!("Logout called on close");
+                event.window().close().unwrap();
+            }
+            tauri::WindowEvent::Destroyed => {
+                login::force_logout();
+                println!("Logout called on destroy");
+            }
+            _ => {}
         })
         .invoke_handler(tauri::generate_handler![
             tauri_ui::window::resize_window_for_login,
