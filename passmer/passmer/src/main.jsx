@@ -5,6 +5,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Login from './login';
 import Sidebar from './sidebar';
 import Fields from './fields';
+import SeasonalClass from './seasonal_class';
 import { invoke } from '@tauri-apps/api';
 
 export function Main() {
@@ -117,7 +118,7 @@ export function Main() {
           My explanation of React.StrictMode:
           StrictMode is a tool for highlighting potential problems in an application. Like Fragment, StrictMode does not render any visible UI. It activates additional checks and warnings for its descendants.
           This checks do the following:
-          They create double events, double data and more problems than they solve. They are not the right. Whoever invented this: Shame on you. :)
+          They create double events, double data and more problems than they solve. They are not the right thing to do. Whoever invented this: Shame on you. :)
           And no, I will not discuss about it. It's a fact. With strict mode, I create more potential security problems than I solve (Even if they are only during development).*/}
             <Routes>
               <Route path="/" element={<Login/>} />
@@ -134,6 +135,7 @@ export function Main() {
 function App() {
   return (
     <Router>
+      <SeasonalClass />
       <Main />
     </Router>
   );
