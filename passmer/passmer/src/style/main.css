@@ -1052,12 +1052,27 @@ html, body {
 }
 
 html {
-  background-color: #1b1b1b;
-  background-image: url("../assets/background_login.webp");
+  background-color: rgba(27, 27, 27, 0.9);
+  background-image: url("../assets/background_default.webp");
   /*background-size: 100px;*/
   background-blend-mode: multiply;
   background-position: center center;
   background-size: cover;
+}
+html.xmas {
+  background-image: url("../assets/background_xmas.webp") !important;
+}
+html.new-year {
+  background-image: url("../assets/background_new_year.webp") !important;
+}
+html.easter {
+  background-image: url("../assets/background_easter.webp") !important;
+}
+html.halloween {
+  background-image: url("../assets/background_halloween.webp") !important;
+}
+html.valentines {
+  background-image: url("../assets/background_valentines.webp") !important;
 }
 
 * {

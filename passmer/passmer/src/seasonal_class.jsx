@@ -10,7 +10,15 @@ const SeasonalClass = () => {
             return now >= new Date(start) && now <= new Date(end);
         };
 
-        if (isInRange(`${today.getFullYear()}-12-01`, `${today.getFullYear()}-12-26`)) {
+        const isExactDate = (month, day) => {
+            return today.getMonth() === month && today.getDate() === day;
+        };
+
+        if (isInRange(`${today.getFullYear()}-10-20`, `${today.getFullYear()}-10-31`)) {
+            htmlTag.classList.add('halloween');
+        } else if (isExactDate(1, 14)) { // Month 1 is February (0-based)
+            htmlTag.classList.add('valentines');
+        } else if (isInRange(`${today.getFullYear()}-12-01`, `${today.getFullYear()}-12-26`)) {
             htmlTag.classList.add('xmas');
         } else if (isInRange(`${today.getFullYear()}-12-27`, `${today.getFullYear() + 1}-01-02`)) {
             htmlTag.classList.add('new-year');
@@ -19,7 +27,7 @@ const SeasonalClass = () => {
         }
 
         return () => {
-            htmlTag.classList.remove('xmas', 'new-year', 'easter');
+            htmlTag.classList.remove('halloween', 'valentines', 'xmas', 'new-year', 'easter');
         };
     }, []);
 
