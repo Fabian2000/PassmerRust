@@ -14,7 +14,7 @@ const SeasonalClass = () => {
             htmlTag.classList.add('xmas');
         } else if (isInRange(`${today.getFullYear()}-12-27`, `${today.getFullYear() + 1}-01-02`)) {
             htmlTag.classList.add('new-year');
-        } else if (isInRange(`${today.getFullYear()}-03-29`, `${today.getFullYear()}-05-19`)) { // Osterzeit anpassen
+        } else if (isInRange(`${today.getFullYear()}-03-29`, `${today.getFullYear()}-05-19`)) {
             htmlTag.classList.add('easter');
         }
 
