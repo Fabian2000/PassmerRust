@@ -16,11 +16,23 @@ html, body {
 
 html {
     background-color: $bg-color;
-    background-image: url('../assets/background_login.webp');
+    background-image: url('../assets/background_default.webp');
     /*background-size: 100px;*/
     background-blend-mode: multiply;
     background-position: center center;
     background-size: cover;
+
+    &.xmas {
+        background-image: url('../assets/background_xmas.webp') !important;
+    }
+
+    &.new-year {
+        background-image: url('../assets/background_new_year.webp') !important;
+    }
+
+    &.easter {
+        background-image: url('../assets/background_easter.webp') !important;
+    }
 }
 
 * {
