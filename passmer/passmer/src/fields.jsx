@@ -389,7 +389,9 @@ export function Fields() {
                                         <label className="field-label" htmlFor={item.field_id}><FontAwesomeIcon icon={faFingerprint} /> {item.field_title} <button className="btn" onClick={ () => {
                                             Invokes.generateFactorToken(parseInt(sectionId), item.field_id)
                                             .then(token => {
-                                                console.log("Generated token:", token); // Der tatsächliche String-Wert
+                                                if (token.length === 6) {
+                                                    token = token.slice(0, 3) + " " + token.slice(3);
+                                                }
                                                 customInputLoad(item.field_id, token);
                                             })
                                             .catch(error => {
