@@ -42,6 +42,42 @@ textarea::selection {
   color: #161616;
 }
 
+select {
+  border-radius: 7px;
+  padding: 10px;
+  outline: none;
+  border: 0;
+}
+select:focus-visible {
+  outline: solid 2px #ff0000;
+}
+select:focus {
+  outline: none;
+}
+select::-moz-selection {
+  background-color: #ffffff !important;
+  color: #161616;
+}
+select::selection {
+  background-color: #ffffff !important;
+  color: #161616;
+}
+
+option {
+  background-color: #1b1b1b;
+  color: #ffffff;
+  padding: 10px;
+  font-size: 11pt;
+}
+option:hover {
+  background-color: #303030;
+  color: #ffffff;
+}
+option:checked {
+  background-color: #303030;
+  color: #ffffff;
+}
+
 .login {
   display: flex;
   justify-content: center;
@@ -648,6 +684,30 @@ textarea::selection {
   background-color: #303030;
   margin: 10px;
 }
+.fields-layout .fields .add-field-popup .add-field-sidebar .select {
+  width: calc(100% - 10px * 2);
+  background-color: #303030;
+  margin: 10px;
+}
+.fields-layout .fields .add-field-popup .add-field-sidebar .scrollable-options {
+  height: calc(100dvh - 100px - 3 * 10px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.fields-layout .fields .add-field-popup .add-field-sidebar .scrollable-options::-webkit-scrollbar {
+  width: 10px;
+}
+.fields-layout .fields .add-field-popup .add-field-sidebar .scrollable-options::-webkit-scrollbar-thumb {
+  background-color: #161616;
+  border-radius: 7px;
+}
+.fields-layout .fields .add-field-popup .add-field-sidebar .scrollable-options::-webkit-scrollbar-track {
+  background-color: #202020;
+  border-radius: 7px;
+}
+.fields-layout .fields .add-field-popup .add-field-sidebar .scrollable-options::-webkit-scrollbar-thumb:hover {
+  background-color: #292929;
+}
 .fields-layout .fields .add-field-popup .add-field-sidebar .option {
   width: calc(100% - 10px * 2);
   margin: 10px;
@@ -728,6 +788,16 @@ textarea::selection {
   text-wrap: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.fields-layout .fields .fields-content .field-text .field-label .btn {
+  background-color: #161616;
+  margin-right: 10px;
+  cursor: pointer;
+  padding: 2px;
+  transition: all 0.25s ease-in-out;
+}
+.fields-layout .fields .fields-content .field-text .field-label .btn:hover {
+  background-color: #292929;
 }
 .fields-layout .fields .fields-content .field-text .field-input {
   width: 200px;
@@ -1080,6 +1150,14 @@ html.valentines {
   -webkit-user-select: none;
   user-select: none;
   color: #f0f0f0;
+}
+
+.d-block {
+  display: block;
+}
+
+.d-none {
+  display: none;
 }
 
 ::-ms-reveal,

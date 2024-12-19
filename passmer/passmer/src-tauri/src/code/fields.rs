@@ -81,6 +81,7 @@ pub fn add_field(section_id: i64, field_title: String, field_value: String, fiel
                 "DateTime" => FieldTypes::DateTime,
                 "Notes" => FieldTypes::Notes,
                 "Split" => FieldTypes::Split,
+                "TwoFactor" => FieldTypes::TwoFactor,
                 _ => FieldTypes::Text,
             };
 
@@ -274,6 +275,204 @@ pub fn rename_field(section_id: i64, field_id: i64, new_title: String) {
     }
 
     passmer::save_db();
+}
+
+#[tauri::command]
+pub fn set_factor_field(section_id: i64, field_id: i64, factor_key: String, factor_type: String) {
+    {
+        let mut db_guard = GLOBAL_PASSMER_DB.lock().unwrap();
+
+        let Some(mut db) = (*db_guard).clone() else {
+            println!("Database not available");
+            msg_box(languages::get_translation("UNABLE_GET_DB_MSG"), "error");
+            return;
+        };
+
+        let mut section_vectors = match db.sections {
+            Some(sections) => sections,
+            None => {
+                println!("Sections not available");
+                msg_box(
+                    languages::get_translation("SECTIONS_NOT_AVAILABLE_MSG"),
+                    "error",
+                );
+                return;
+            }
+        };
+
+        let section_index = section_vectors
+            .iter()
+            .position(|section| section.section_id == section_id);
+
+        if let Some(index) = section_index {
+            let fields = match section_vectors[index].fields.as_mut() {
+                Some(f) => f,
+                None => {
+                    println!("Fields not available");
+                    msg_box(
+                        languages::get_translation("FIELDS_NOT_AVAILABLE_MSG"),
+                        "error",
+                    );
+                    return;
+                }
+            };
+
+            let field_index = fields.iter().position(|f| f.field_id == field_id);
+
+            if let Some(index) = field_index {
+                fields[index].field_value =
+                    format!("{}:{}:0", factor_key, factor_type.to_uppercase());
+            }
+        }
+
+        db.sections = Some(section_vectors);
+        *db_guard = Some(db);
+    }
+
+    passmer::save_db();
+}
+
+#[tauri::command]
+pub fn generate_factor_token(section_id: i64, field_id: i64) -> String {
+    let updated_field_value;
+    {
+        let mut db_guard = GLOBAL_PASSMER_DB.lock().unwrap();
+
+        let db = match (*db_guard).as_mut() {
+            Some(db) => db,
+            None => {
+                println!("Database not available");
+                msg_box(languages::get_translation("UNABLE_GET_DB_MSG"), "error");
+                return String::new();
+            }
+        };
+
+        let section_vectors = match db.sections.as_mut() {
+            Some(sections) => sections,
+            None => {
+                println!("Sections not available");
+                msg_box(
+                    languages::get_translation("SECTIONS_NOT_AVAILABLE_MSG"),
+                    "error",
+                );
+                return String::new();
+            }
+        };
+
+        let section = match section_vectors
+            .iter_mut()
+            .find(|s| s.section_id == section_id)
+        {
+            Some(sec) => sec,
+            None => {
+                println!("Section not found");
+                msg_box(languages::get_translation("SECTION_NOT_FOUND_MSG"), "error");
+                return String::new();
+            }
+        };
+
+        let fields = match section.fields.as_mut() {
+            Some(f) => f,
+            None => {
+                println!("Fields not available");
+                msg_box(
+                    languages::get_translation("FIELDS_NOT_AVAILABLE_MSG"),
+                    "error",
+                );
+                return String::new();
+            }
+        };
+
+        let field = match fields.iter_mut().find(|f| f.field_id == field_id) {
+            Some(f) => f,
+            None => {
+                println!("Field not found");
+                msg_box(languages::get_translation("FIELD_NOT_FOUND_MSG"), "error");
+                return String::new();
+            }
+        };
+
+        let field_value = &field.field_value;
+        let parts: Vec<&str> = field_value.split(':').collect();
+
+        if parts.len() != 3 {
+            println!("Invalid factor field format");
+            msg_box(
+                languages::get_translation("INVALID_FIELD_FORMAT_MSG"),
+                "error",
+            );
+            return String::new();
+        }
+
+        let factor_key = parts[0];
+        let factor_type = parts[1].to_uppercase();
+        let counter = match parts[2].parse::<u64>() {
+            Ok(c) => c,
+            Err(_) => {
+                println!("Invalid counter value, defaulting to 0");
+                0
+            }
+        };
+
+        match factor_type.as_str() {
+            "TOTP" => {
+                use otp_std::{Base, Secret, Totp};
+                let secret = match Secret::decode(factor_key) {
+                    Ok(s) => s,
+                    Err(_) => {
+                        println!("Invalid secret key");
+                        msg_box(
+                            languages::get_translation("INVALID_SECRET_KEY_MSG"),
+                            "error",
+                        );
+                        return String::new();
+                    }
+                };
+
+                let base = Base::builder().secret(secret).build();
+                let totp = Totp::builder().base(base).build();
+
+                let code = totp.generate();
+                updated_field_value = code.to_string();
+            }
+            "HOTP" => {
+                use otp_std::{Base, Counter, Hotp, Secret};
+                let secret = match Secret::decode(factor_key) {
+                    Ok(s) => s,
+                    Err(_) => {
+                        println!("Invalid secret key");
+                        msg_box(
+                            languages::get_translation("INVALID_SECRET_KEY_MSG"),
+                            "error",
+                        );
+                        return String::new();
+                    }
+                };
+
+                let base = Base::builder().secret(secret).build();
+                let mut hotp = Hotp::builder()
+                    .base(base)
+                    .counter(Counter::new(counter))
+                    .build();
+
+                let code = hotp.generate();
+                field.field_value = format!("{}:{}:{}", factor_key, factor_type, counter + 1);
+                updated_field_value = code.to_string();
+            }
+            _ => {
+                println!("Unsupported factor type");
+                msg_box(
+                    languages::get_translation("UNSUPPORTED_FACTOR_TYPE_MSG"),
+                    "error",
+                );
+                return String::new();
+            }
+        }
+    }
+
+    passmer::save_db();
+
+    updated_field_value
 }
 
 #[tauri::command]

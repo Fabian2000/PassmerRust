@@ -101,6 +101,36 @@
                     margin: $padding;
                 }
 
+                .select {
+                    width: calc(100% - #{$padding} * 2);
+                    background-color: $input-color;
+                    margin: $padding;
+                }
+
+                .scrollable-options {
+                    height: calc(100dvh - 100px - 3 * #{$padding});
+                    overflow-y: auto;
+                    overflow-x: hidden;
+
+                    &::-webkit-scrollbar {
+                        width: 10px;
+                    }
+                
+                    &::-webkit-scrollbar-thumb {
+                        background-color: $primary-color;
+                        border-radius: $radius;
+                    }
+                
+                    &::-webkit-scrollbar-track {
+                        background-color: $bg-sidebar-color;
+                        border-radius: $radius;
+                    }
+                
+                    &::-webkit-scrollbar-thumb:hover {
+                        background-color: $primary-color-lighter;
+                    }
+                }
+
                 .option {
                     width: calc(100% - #{$padding} * 2);
                     margin: $padding;
@@ -194,6 +224,19 @@
                     text-wrap: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+
+                    .btn {
+                        background-color: $primary-color;
+                        margin-right: $padding;
+                        cursor: pointer;
+                        //padding: calc(#{$padding} / 2);
+                        padding: 2px;
+                        transition: all 0.25s ease-in-out;
+    
+                        &:hover {
+                            background-color: $primary-color-lighter;
+                        }
+                    }
                 }
 
                 .field-input {

@@ -44,4 +44,5 @@ pub enum FieldTypes {
     DateTime,
     Notes,
     Split, // not an input, just a splitter for next line
+    TwoFactor,
 }

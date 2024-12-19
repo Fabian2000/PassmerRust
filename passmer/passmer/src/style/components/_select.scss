@@ -1,0 +1,41 @@
+select {
+    border-radius: $radius;
+    padding: $padding;
+    outline: none;
+    border: 0;
+
+    &:focus-visible {
+        outline: $outline;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &::-moz-selection {
+        background-color: $input-text-color !important;
+        color: $primary-color;
+    }
+    
+    &::selection {
+        background-color: $input-text-color !important;
+        color: $primary-color;
+    }
+}
+
+option {
+    background-color: $bg-color;
+    color: $input-text-color;
+    padding: $padding;
+    font-size: $font-size-sm;
+    
+    &:hover {
+        background-color: $input-color;
+        color: $input-text-color;
+    }
+
+    &:checked {
+        background-color: $input-color;
+        color: $input-text-color;
+    }
+}

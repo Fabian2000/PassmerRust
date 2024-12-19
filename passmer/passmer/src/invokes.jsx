@@ -42,6 +42,10 @@ export const deleteField = (sectionId, fieldId) => invoke('delete_field', { "sec
 
 export const renameField = (sectionId, fieldId, title) => invoke('rename_field', { "sectionId": sectionId, "fieldId": fieldId, "newTitle": title });
 
+export const setFactorField = (sectionId, fieldId, factorKey, factorType) => invoke('set_factor_field', { "sectionId": sectionId, "fieldId": fieldId, "factorKey": factorKey, "factorType": factorType });
+
+export const generateFactorToken = (sectionId, fieldId) => invoke('generate_factor_token', { "sectionId": sectionId, "fieldId": fieldId });
+
 export const updateFieldValue = (sectionId, fieldId, value) => invoke('update_field_value', { "sectionId": sectionId, "fieldId": fieldId, "newValue": value });
 
 export const clipboardCopy = (text) => invoke('clipboard_copy', { "text": text });
@@ -75,5 +79,6 @@ export const fieldTypes = Object.freeze({
     TIME: "Time",
     DATETIME: "DateTime",
     NOTES: "Notes",
-    SPLIT: "Split"
+    SPLIT: "Split",
+    TWO_FACTOR: "TwoFactor",
 });

@@ -77,6 +77,8 @@ fn main() {
             code::fields::swap_order_ids,
             code::fields::delete_field,
             code::fields::rename_field,
+            code::fields::set_factor_field,
+            code::fields::generate_factor_token,
             clipboard_copy,
             code::fields::update_field_value,
             remote_type_text,

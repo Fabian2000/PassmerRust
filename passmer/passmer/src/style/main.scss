@@ -1,6 +1,7 @@
 @import 'variables';
 @import 'components/button';
 @import 'components/input';
+@import 'components/select';
 @import 'login';
 @import 'sidebar';
 @import 'fields';
@@ -48,6 +49,14 @@ html {
     -webkit-user-select: none;
     user-select: none;
     color: $secondary-color;
+}
+
+.d-block {
+    display: block;
+}
+
+.d-none {
+    display: none;
 }
 
 ::-ms-reveal,
