@@ -1,0 +1,138 @@
+@import 'variables';
+
+.flatpickr-calendar {
+    background-color: $bg-color !important; /* Background of the popup */
+    border: none !important; /* Border color */
+    border-radius: 8px !important;
+
+    position: fixed !important; /* Fixed to viewport */
+    top: 50% !important;        /* Center vertically */
+    left: 50% !important;       /* Center horizontally */
+    transform: translate(-50%, -50%) !important; /* Center in both axes */
+    margin: 0 !important;       /* Remove default margins */
+    z-index: 9999 !important;   /* Ensure it appears above all elements */
+    width: auto !important;     /* Ensure no unexpected resizing */
+    //max-width: 90%;             /* Prevent it from overflowing the viewport */
+    max-width: 307.875px;             /* Prevent it from overflowing the viewport */
+}
+
+.flatpickr-day {
+    color: $input-text-color !important; /* Day text color */
+}
+
+.flatpickr-day:hover {
+    background-color: $bg-sidebar-color !important; /* Hover background for days */
+}
+
+.flatpickr-day.selected {
+    background-color: $input-color !important; /* Selected day background */
+    color: $input-text-color !important; /* Selected day text color */
+}
+
+.flatpickr-day.disabled {
+    color: transparent !important; /* Disabled day text color */
+    background-color: transparent !important; /* Disabled day background */
+    pointer-events: none !important;
+}
+
+.flatpickr-day.disabled:hover {
+    background-color: transparent !important; /* Prevent hover on disabled days */
+    color: transparent !important;
+}
+
+.flatpickr-month {
+    color: $input-text-color !important; /* Month text color */
+    font-weight: bold !important;
+}
+
+.flatpickr-current-month {
+    background-color: $bg-color !important; /* Highlight background for the month */
+    border-radius: 4px !important;
+    padding: 5px !important;
+}
+
+.flatpickr-prev-month svg,
+.flatpickr-next-month svg {
+    fill: $input-text-color !important; /* Set to your input text color */
+}
+
+/* Wochentage (Sun, Mon, Tue, ...) */
+.flatpickr-weekday {
+    color: $input-text-color !important; /* Set to your input text color */
+    font-weight: bold !important; /* Optional: Make them bold */
+    background-color: transparent !important; /* Ensure no background */
+}
+
+/* Styles for the month and year dropdown (select popup) */
+.flatpickr-monthDropdown-months {
+    background-color: $bg-color !important; /* Background of the dropdown */
+    color: $input-text-color !important; /* Text color */
+    border: none !important; /* Optional: Add a border */
+    border-radius: 4px !important; /* Optional: Round the corners */
+}
+
+.flatpickr-monthDropdown-months option {
+    background-color: $bg-color !important; /* Background for each option */
+    color: $input-text-color !important; /* Text color for options */
+}
+
+/* Adjust hover effect for dropdown options */
+.flatpickr-monthDropdown-months option:hover {
+    background-color: $bg-sidebar-color !important; /* Hover background color */
+    color: $input-text-color !important; /* Hover text color */
+}
+
+/* Year input arrows for Flatpickr */
+.flatpickr-current-month .numInputWrapper span.arrowUp:after {
+    border-bottom-color: $input-text-color !important; /* Set arrow color */
+    display: none !important; /* Hide the arrows */
+}
+
+.flatpickr-current-month .numInputWrapper span.arrowUp {
+    display: none !important; /* Hide the arrows */
+}
+
+.flatpickr-current-month .numInputWrapper span.arrowDown:after {
+    border-top-color: $input-text-color !important; /* Set arrow color */
+    display: none !important; /* Hide the arrows */
+}
+
+.flatpickr-current-month .numInputWrapper span.arrowDown {
+    display: none !important; /* Hide the arrows */
+}
+
+.flatpickr-calendar:before, .flatpickr-calendar:after {
+    border: none !important; /* Set border color */
+}
+
+.flatpickr-calendar.hasTime .flatpickr-time {
+    border: none !important;
+}
+
+.flatpickr-time .numInputWrapper {
+    height: 20px;
+}
+
+/* Hide AM/PM toggle if 24-hour format is active */
+.flatpickr-time .flatpickr-am-pm {
+    display: none !important;
+}
+
+/* Time input fields */
+.flatpickr-time input[type="number"] {
+    background-color: $bg-color !important; /* Background color */
+    color: $input-text-color !important; /* Text color */
+    border: none !important; /* Border color */
+    border-radius: 4px !important; /* Border radius */
+    padding: 5px !important; /* Padding */
+}
+
+.flatpickr-time .numInputWrapper span.arrowUp {
+    top: 50% !important;
+    display: none !important;
+}
+
+.flatpickr-time .numInputWrapper span.arrowDown {
+    top: 90% !important;
+    display: none !important;
+}

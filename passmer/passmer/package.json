@@ -14,8 +14,10 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@tauri-apps/api": "^1.5.4",
+    "flatpickr": "^4.6.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-flatpickr": "^3.10.13",
     "react-router-dom": "^6.23.0",
     "react-transition-group": "^4.4.5"
   },
