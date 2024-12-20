@@ -1,39 +1,49 @@
 .remote-typing {
-    position: absolute;
-    top: -5000px;
-    background-color: $bg-color;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    transition: all 0.3s ease;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    width: 100dvw;
+    height: 100dvh;
+    position: fixed;
+    top: -100dvi;
+    left: 0;
+    transition: all 0.3s ease-in-out;
 
     &.show {
-        display: flex;
-        inset: 0;
+        top: 0;
+        left: 0;
+    }
 
-        h3 {
-            font-size: 30pt;
+    &.show .remote-typing-content {
+        display: block;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        h2 {
+            font-size: $font-size;
+            position: absolute;
+            top: 0;
+            padding: 0;
+            margin: $padding;
         }
 
         .btn {
             position: fixed;
             right: 20px;
             bottom: 20px;
-            width: 50px;
+            width: 100px;
             height: 50px;
-            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 10px 0 $bg-rgba-color;
             background-color: $input-color;
-            border-radius: 100%;
+            border-radius: 50px;
             color: $input-text-color;
             border: solid 1px $input-text-color;
         }
 
         .countdown {
             position: relative;
-            width: 400px;
-            height: 400px;
+            width: 200px;
+            height: 200px;
             transform-style: preserve-3d;
             perspective: 1000px;
         }
@@ -117,8 +127,12 @@
         .countdown .number h2 {
             margin: 0;
             padding: 0;
-            font-size: 20em;
-            color: #fff;
+            position: absolute;
+            top: 60px;
+            font-size: 75pt;
+            padding: 0;
+            margin: 0;
+            color: $secondary-color;
         }
         
         @keyframes animate {
@@ -131,4 +145,17 @@
             }
         }
     }
+}
+.remote-typing-content {
+    position: fixed;
+    top: -5000px;
+    background-color: $bg-color;
+    border-radius: $radius;
+    border: solid 1px $secondary-color;
+    display: none;
+    z-index: 9999;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    width: 300px;
+    height: 200px;
 }

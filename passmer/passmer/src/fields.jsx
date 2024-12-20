@@ -327,49 +327,51 @@ export function Fields() {
                 </div>
 
                 <div className="remote-typing">
-                    <h2>Remote Typing in:</h2>
-                    <div className="countdown">
-                        <div className="number">
-                            <h2>10</h2>
+                    <div className="remote-typing-content">
+                        <h2>Remote Typing in:</h2>
+                        <div className="countdown">
+                            <div className="number">
+                                <h2>10</h2>
+                            </div>
+                            
+                            <div className="number">
+                                <h2>9</h2>
+                            </div>
+                            
+                            <div className="number">
+                                <h2>8</h2>
+                            </div>
+                            
+                            <div className="number">
+                                <h2>7</h2>
+                            </div>
+                            
+                            <div className="number">
+                                <h2>6</h2>
+                            </div>
+                            
+                            <div className="number">
+                                <h2>5</h2>
+                            </div>
+                            
+                            <div className="number">
+                                <h2>4</h2>
+                            </div>
+                            
+                            <div className="number">
+                                <h2>3</h2>
+                            </div>
+                            
+                            <div className="number">
+                                <h2>2</h2>
+                            </div>
+                            
+                            <div className="number">
+                                <h2>1</h2>
+                            </div>
                         </div>
-                        
-                        <div className="number">
-                            <h2>9</h2>
-                        </div>
-                        
-                        <div className="number">
-                            <h2>8</h2>
-                        </div>
-                        
-                        <div className="number">
-                            <h2>7</h2>
-                        </div>
-                        
-                        <div className="number">
-                            <h2>6</h2>
-                        </div>
-                        
-                        <div className="number">
-                            <h2>5</h2>
-                        </div>
-                        
-                        <div className="number">
-                            <h2>4</h2>
-                        </div>
-                        
-                        <div className="number">
-                            <h2>3</h2>
-                        </div>
-                        
-                        <div className="number">
-                            <h2>2</h2>
-                        </div>
-                        
-                        <div className="number">
-                            <h2>1</h2>
-                        </div>
+                        <button className="btn" title="Cancel remote typing" onClick={ ()=> cancelRemoteTypeText() }><FontAwesomeIcon icon={faPowerOff} /> Cancel</button>
                     </div>
-                    <button className="btn" title="Cancel remote typing" onClick={ ()=> cancelRemoteTypeText() }><FontAwesomeIcon icon={faPowerOff} /></button>
                 </div>
 
                 <div className="fields-content">
