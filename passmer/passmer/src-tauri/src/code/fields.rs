@@ -450,7 +450,7 @@ pub fn generate_factor_token(section_id: i64, field_id: i64) -> String {
                 };
 
                 let base = Base::builder().secret(secret).build();
-                let mut hotp = Hotp::builder()
+                let hotp = Hotp::builder()
                     .base(base)
                     .counter(Counter::new(counter))
                     .build();

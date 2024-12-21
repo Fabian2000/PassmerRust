@@ -72,6 +72,9 @@ fn main() {
             database::commands::delete_section,
             database::commands::rename_section,
             database::commands::duplicate_section,
+            database::commands::get_section_tags,
+            database::commands::remove_section_tag,
+            database::commands::add_section_tag,
             code::fields::get_fields,
             code::fields::add_field,
             code::fields::swap_order_ids,
@@ -104,7 +107,10 @@ fn main() {
 
     #[tauri::command]
     fn open(link: String) {
-        open::that(link).unwrap();
+        if let Err(err) = open::that(link) {
+            println!("Error opening link: {:?}", err);
+            msg_box(languages::get_translation("ERR_OPENING_LINK_MSG"), "error");
+        }
     }
 
     #[tauri::command]

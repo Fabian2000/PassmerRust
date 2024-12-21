@@ -62,6 +62,12 @@ export const startUpdater = () => invoke('start_updater');
 
 export const msgBox = (message, level) => invoke('msg_box', { "text" : message, "level" : level });
 
+export const getSectionTags = (sectionId) => invoke('get_section_tags', { "sectionId": sectionId });
+
+export const removeSectionTag = (sectionId, tag) => invoke('remove_section_tag', { "sectionId": sectionId, "tag": tag });
+
+export const addSectionTag = (sectionId, tag) => invoke('add_section_tag', { "sectionId": sectionId, "tag": tag });
+
 export const msgBoxLevel = Object.freeze({
     INFO: "info",
     WARNING: "warning",

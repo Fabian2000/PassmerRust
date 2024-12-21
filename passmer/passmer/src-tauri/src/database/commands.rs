@@ -280,3 +280,97 @@ pub fn duplicate_section(section_id: i64, duplication_name: String) {
 
     passmer::save_db();
 }
+
+#[tauri::command]
+pub fn get_section_tags(section_id: i64) -> Vec<String> {
+    {
+        let db_guard = GLOBAL_PASSMER_DB.lock().unwrap();
+
+        let Some(db) = &(*db_guard) else {
+            eprintln!("Database not available");
+            return Vec::new();
+        };
+
+        let Some(section) = db.sections.as_ref() else {
+            eprintln!("Sections not available");
+            return Vec::new();
+        };
+
+        let Some(section) = section
+            .iter()
+            .find(|section| section.section_id == section_id)
+        else {
+            eprintln!("Section not found");
+            return Vec::new();
+        };
+
+        match &section.tags {
+            Some(tags) => tags.iter().cloned().collect(),
+            None => Vec::new(),
+        }
+    }
+}
+
+#[tauri::command]
+pub fn remove_section_tag(section_id: i64, tag: String) {
+    {
+        let mut db_guard = GLOBAL_PASSMER_DB.lock().unwrap();
+
+        let Some(db) = &mut (*db_guard) else {
+            eprintln!("Database not available");
+            return;
+        };
+
+        let Some(section) = db.sections.as_mut() else {
+            eprintln!("Sections not available");
+            return;
+        };
+
+        let Some(section) = section
+            .iter_mut()
+            .find(|section| section.section_id == section_id)
+        else {
+            eprintln!("Section not found");
+            msg_box::msg_box(languages::get_translation("SECTION_NOT_FOUND_MSG"), "error");
+            return;
+        };
+
+        if let Some(tags) = section.tags.as_mut() {
+            tags.remove(&tag);
+        }
+    }
+
+    passmer::save_db();
+}
+
+#[tauri::command]
+pub fn add_section_tag(section_id: i64, tag: String) {
+    {
+        let mut db_guard = GLOBAL_PASSMER_DB.lock().unwrap();
+
+        let Some(db) = &mut (*db_guard) else {
+            eprintln!("Database not available");
+            return;
+        };
+
+        let Some(section) = db.sections.as_mut() else {
+            eprintln!("Sections not available");
+            return;
+        };
+
+        let Some(section) = section
+            .iter_mut()
+            .find(|section| section.section_id == section_id)
+        else {
+            eprintln!("Section not found");
+            msg_box::msg_box(languages::get_translation("SECTION_NOT_FOUND_MSG"), "error");
+            return;
+        };
+
+        if let Some(tags) = section.tags.as_mut() {
+            tags.insert(tag);
+        }
+    }
+
+    passmer::save_db();
+}

@@ -128,14 +128,18 @@ lazy_static! {
         Arc::new(Mutex::new(DEFAULT_LANGUAGE.as_ref().clone()));
 }
 
+#[allow(dead_code)]
 pub fn fill_missing_language_keys() {
-    let mut current_language = CURRENT_LANGUAGE.lock().unwrap();
+    unreachable!(
+        "Update to JSON based language files? Probably smarter than inventing a new format."
+    );
+    /*let mut current_language = CURRENT_LANGUAGE.lock().unwrap();
 
     for (key, value) in DEFAULT_LANGUAGE.iter() {
         _ = *current_language
             .entry(key.to_string())
             .or_insert(value.to_string());
-    }
+    }*/
 }
 
 pub fn get_translation(key: &str) -> String {
